@@ -1,0 +1,2 @@
+{"data":{"pathHasNodejs":false,"nodeWorksBefore":false},"hypothesisId":"C","message":"PATH before fix","runId":"post-fix","sessionId":"a8bb6f","timestamp":1783501714069,"location":"verify.ps1:pre"}
+{"data":{"nodeVersion":"v24.18.0","nodeWorksAfter":true},"hypothesisId":"C","message":"PATH after fix","runId":"post-fix","sessionId":"a8bb6f","timestamp":1783501714496,"location":"verify.ps1:post"}
