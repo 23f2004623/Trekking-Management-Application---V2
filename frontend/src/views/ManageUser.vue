@@ -26,21 +26,21 @@
           </li>
 
           <li class="nav-item">
-            <router-link class="nav-link" to="/admin/treks">
+            <router-link class="nav-link" to="/admin/manage_treks">
               <i class="fa-solid fa-mountain"></i>
               Treks
             </router-link>
           </li>
 
           <li class="nav-item">
-            <router-link class="nav-link" to="/admin/staff">
+            <router-link class="nav-link" to="/admin/manage_staff">
               <i class="fa-solid fa-person-hiking"></i>
               Trekking Staff
             </router-link>
           </li>
 
           <li class="nav-item">
-            <router-link class="nav-link active" to="/admin/users">
+            <router-link class="nav-link active" to="/admin/manage_users">
               <i class="fa-solid fa-users"></i>
               Users
             </router-link>

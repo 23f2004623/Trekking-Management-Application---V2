@@ -79,6 +79,16 @@ class booking_table(db.Model):
     status = db.Column(db.String(20), default='Booked')  # Booked, Cancelled, Completed
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
+class feedback_table(db.Model):
+    __tablename__ = 'feedbacks'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    trek_id = db.Column(db.Integer, db.ForeignKey('treks.id'), nullable=False)
+    rating = db.Column(db.Integer, nullable=False)  # 1 to 5
+    comment = db.Column(db.Text, nullable=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
 
 
 @app.route("/")
@@ -126,7 +136,136 @@ def login():
     access_token = create_access_token(identity=str(user.id))
     return jsonify({"message": "Login successful", "access_token": access_token}), 200
 
+@app.route('/admin/create_staff', methods=['POST'])
+def create_staff():
+    data = request.get_json()
+    username = data.get('username')
+    email = data.get('email')
+    password = data.get('password')
+    full_name = data.get('full_name')
+    contact_number = data.get('contact_number')
 
+    if User.query.filter_by(email=email).first():
+        return jsonify({"message": "Email already exists"}), 400
+
+    staff = User(
+        username=username,
+        email=email,
+        password=password(password),
+        role='staff',
+        full_name=full_name,
+        contact_number=contact_number,
+        status='active'
+    )
+    db.session.add(staff)
+    db.session.commit()
+    return jsonify({"message": "Staff created successfully", "data": data}), 201
+
+@app.route('/admin/delete_staff', methods=['POST'])
+def delete_staff():
+    data = request.get_json()
+    staff_id = data.get('staff_id')
+
+    staff = User.query.get(staff_id)
+    if not staff:
+        return jsonify({"message": "Staff not found"}), 404
+
+    db.session.delete(staff)
+    db.session.commit()
+    return jsonify({"message": "Staff deleted successfully"}), 200
+
+
+@app.route('/admin/create_trek', methods=['POST'])
+def create_trek():
+    data = request.get_json()
+    name = data.get('name')
+    location = data.get('location')
+    difficulty = data.get('difficulty')
+    duration_days = data.get('duration_days')
+    available_slots = data.get('available_slots')
+    total_slots = data.get('total_slots')
+    assigned_staff_id = data.get('assigned_staff_id')
+    status = data.get('status', 'Open')  # Default to 'Open' if not provided
+    start_date = data.get('start_date')
+    end_date = data.get('end_date')
+    description = data.get('description')
+    image_url = data.get('image_url')
+
+    trek = trekking_table(
+        name=name,
+        location=location,
+        difficulty=difficulty,
+        duration_days=duration_days,
+        available_slots=available_slots,
+        total_slots=total_slots,
+        assigned_staff_id=assigned_staff_id,
+        status=status,
+        start_date=start_date,
+        end_date=end_date,
+        description=description,
+        image_url=image_url
+    )
+    db.session.add(trek)
+    db.session.commit()
+    return jsonify({"message": "Trek created successfully", "data": data}), 201
+
+@app.route('/admin/delete_trek', methods=['POST'])
+def delete_trek():
+    data = request.get_json()
+    trek_id = data.get('trek_id')
+
+    trek = trekking_table.query.get(trek_id)
+    if not trek:
+        return jsonify({"message": "Trek not found"}), 404
+
+    db.session.delete(trek)
+    db.session.commit()
+    return jsonify({"message": "Trek deleted successfully"}), 200
+
+@app.route('/admin/create_booking', methods=['POST'])
+def create_booking():
+    data = request.get_json()
+    user_id = data.get('user_id')
+    trek_id = data.get('trek_id')
+
+    # Check if the user exists
+    user = User.query.get(user_id)
+    if not user:
+        return jsonify({"message": "User not found"}), 404
+
+    # Check if the trek exists
+    trek = trekking_table.query.get(trek_id)
+    if not trek:
+        return jsonify({"message": "Trek not found"}), 404
+
+    # Check if there are available slots
+    if trek.available_slots <= 0:
+        return jsonify({"message": "No available slots for this trek"}), 400
+
+    # Create the booking
+    booking = booking_table(user_id=user_id, trek_id=trek_id)
+    db.session.add(booking)
+
+    # Decrease the available slots for the trek
+    trek.available_slots -= 1
+
+    db.session.commit()
+    return jsonify({"message": "Booking created successfully", "data": data}), 201
+
+@app.route('/admin/blacklist_staff', methods=['POST'])
+def blacklist_staff():
+    data = request.get_json()
+    staff_id = data.get('staff_id')
+
+    staff = User.query.get(staff_id)
+    if not staff:
+        return jsonify({"message": "Staff not found"}), 404
+
+    staff.is_blacklisted = True
+    db.session.commit()
+    return jsonify({"message": "Staff blacklisted successfully"}), 200
+
+@app
 
 if __name__ == "__main__":
     with app.app_context():

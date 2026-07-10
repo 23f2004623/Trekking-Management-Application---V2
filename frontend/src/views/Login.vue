@@ -1,137 +1,402 @@
 <template>
-  <div class="container d-flex justify-content-center align-items-center" style="min-height: 90vh;">
-    <div class="card shadow" style="max-width: 850px; width: 100%;">
-      <div class="row g-0">
+  <div
+    style="
+      min-height: 100vh;
+      background-color: #f2f4f7;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 25px;
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    "
+  >
+    <div
+      style="
+        width: 100%;
+        max-width: 850px;
+        background-color: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+        display: flex;
+        flex-wrap: wrap;
+      "
+    >
+      <!-- left side -->
+      <div
+        style="
+          background-color: #1a1a2e;
+          color: white;
+          padding: 35px;
+          flex: 1;
+          min-width: 280px;
+          box-sizing: border-box;
+        "
+      >
+        <h2
+          style="
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: white;
+            font-size: 26px;
+          "
+        >
+          <span style="color: #ffc107; margin-right: 8px;">▲</span>
+          Trek Journey
+        </h2>
 
-        <!-- left part -->
-        <div class="col-md-5 text-white p-4" style="background-color: #1a1a2e;">
-          <h3 class="mb-3">
-            <i class="fa-solid fa-mountain-sun text-warning me-2"></i>
-            Trek Journey
-          </h3>
+        <p
+          style="
+            color: #c7c7d1;
+            line-height: 1.6;
+            font-size: 14px;
+            margin-bottom: 30px;
+          "
+        >
+          Trekking Management Application for trek booking and management.
+        </p>
 
-          <p class="text-white-50">
-            Trekking Management Application for trek booking and management.
-          </p>
+        <h4
+          style="
+            color: #ffc107;
+            margin-bottom: 15px;
+            font-size: 16px;
+          "
+        >
+          Select Role
+        </h4>
 
-          <h6 class="text-warning mt-4">Select Role</h6>
-
-          <div
-            class="role-box"
-            :class="{ active: activeRole == 'admin' }"
-            @click="selectRole('admin')"
-          >
-            <i class="fa-solid fa-user-shield me-2"></i>
+        <!-- admin role -->
+        <div
+          @click="selectRole('admin')"
+          :style="{
+            border: activeRole == 'admin'
+              ? '1px solid #0d6efd'
+              : '1px solid #55556d',
+            backgroundColor: activeRole == 'admin'
+              ? '#0d6efd'
+              : 'transparent',
+            padding: '12px',
+            borderRadius: '6px',
+            marginBottom: '12px',
+            cursor: 'pointer'
+          }"
+        >
+          <div style="font-size: 15px; font-weight: bold;">
             Admin
-            <br>
-            <small>Manage treks, users and staff</small>
           </div>
 
           <div
-            class="role-box"
-            :class="{ active: activeRole == 'staff' }"
-            @click="selectRole('staff')"
+            style="
+              color: #d2d2dc;
+              font-size: 12px;
+              margin-top: 5px;
+            "
           >
-            <i class="fa-solid fa-person-hiking me-2"></i>
+            Manage treks, users and staff
+          </div>
+        </div>
+
+        <!-- staff role -->
+        <div
+          @click="selectRole('staff')"
+          :style="{
+            border: activeRole == 'staff'
+              ? '1px solid #0d6efd'
+              : '1px solid #55556d',
+            backgroundColor: activeRole == 'staff'
+              ? '#0d6efd'
+              : 'transparent',
+            padding: '12px',
+            borderRadius: '6px',
+            marginBottom: '12px',
+            cursor: 'pointer'
+          }"
+        >
+          <div style="font-size: 15px; font-weight: bold;">
             Trekking Staff
-            <br>
-            <small>Manage assigned treks</small>
           </div>
 
           <div
-            class="role-box"
-            :class="{ active: activeRole == 'user' }"
-            @click="selectRole('user')"
+            style="
+              color: #d2d2dc;
+              font-size: 12px;
+              margin-top: 5px;
+            "
           >
-            <i class="fa-solid fa-users me-2"></i>
+            Manage assigned treks
+          </div>
+        </div>
+
+        <!-- user role -->
+        <div
+          @click="selectRole('user')"
+          :style="{
+            border: activeRole == 'user'
+              ? '1px solid #0d6efd'
+              : '1px solid #55556d',
+            backgroundColor: activeRole == 'user'
+              ? '#0d6efd'
+              : 'transparent',
+            padding: '12px',
+            borderRadius: '6px',
+            marginBottom: '12px',
+            cursor: 'pointer'
+          }"
+        >
+          <div style="font-size: 15px; font-weight: bold;">
             User
-            <br>
-            <small>Book and explore treks</small>
           </div>
 
-          <p class="small text-white-50 mt-4">
-            Selected role is only for login profile highlight.
-          </p>
-        </div>
-
-        <!-- login form -->
-        <div class="col-md-7 p-4 bg-white">
-          <h2>Welcome Back</h2>
-          <p class="text-muted">Login to continue your trekking journey.</p>
-
-          <div v-if="errorMessage" class="alert alert-danger">
-            {{ errorMessage }}
-            <button type="button" class="btn-close float-end" @click="errorMessage = ''"></button>
-          </div>
-
-          <form @submit.prevent="handleLogin">
-            <div class="mb-3">
-              <label class="form-label">Email address</label>
-              <div class="input-group">
-                <span class="input-group-text">
-                  <i class="fa-solid fa-envelope"></i>
-                </span>
-                <input
-                  type="email"
-                  class="form-control"
-                  v-model="email"
-                  placeholder="email@tma.com"
-                  required
-                >
-              </div>
-            </div>
-
-            <div class="mb-3">
-              <label class="form-label">Password</label>
-              <div class="input-group">
-                <span class="input-group-text">
-                  <i class="fa-solid fa-lock"></i>
-                </span>
-                <input
-                  type="password"
-                  class="form-control"
-                  v-model="password"
-                  placeholder="Enter password"
-                  required
-                >
-              </div>
-            </div>
-
-            <div class="form-check mb-3">
-              <input
-                type="checkbox"
-                class="form-check-input"
-                id="rememberMe"
-                v-model="rememberMe"
-              >
-              <label for="rememberMe" class="form-check-label">
-                Remember me
-              </label>
-            </div>
-
-            <button class="btn btn-primary w-100" type="submit" :disabled="loading">
-              <span
-                v-if="loading"
-                class="spinner-border spinner-border-sm me-2"
-              ></span>
-              Login
-            </button>
-          </form>
-
-          <div class="text-center mt-3">
-            <router-link to="/register">
-              Don't have an account? Register as User
-            </router-link>
-          </div>
-
-          <div class="alert alert-info mt-4">
-            <small>
-              <b>Note:</b> Only users can register themselves.
-              Staff accounts are created by admin.
-            </small>
+          <div
+            style="
+              color: #d2d2dc;
+              font-size: 12px;
+              margin-top: 5px;
+            "
+          >
+            Book and explore treks
           </div>
         </div>
 
+        <p
+          style="
+            color: #aaaabc;
+            font-size: 12px;
+            margin-top: 25px;
+            line-height: 1.5;
+          "
+        >
+          Selected role is only used to highlight the login profile.
+        </p>
+      </div>
+
+      <!-- right side -->
+      <div
+        style="
+          flex: 1.3;
+          min-width: 300px;
+          padding: 40px;
+          box-sizing: border-box;
+          background-color: white;
+        "
+      >
+        <h2
+          style="
+            margin-top: 0;
+            margin-bottom: 8px;
+            color: #222;
+            font-size: 28px;
+          "
+        >
+          Welcome Back
+        </h2>
+
+        <p
+          style="
+            color: #777;
+            font-size: 14px;
+            margin-top: 0;
+            margin-bottom: 25px;
+          "
+        >
+          Login to continue your trekking journey.
+        </p>
+
+        <!-- error message -->
+        <div
+          v-if="errorMessage"
+          style="
+            background-color: #f8d7da;
+            color: #842029;
+            border: 1px solid #f5c2c7;
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 18px;
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          "
+        >
+          <span>{{ errorMessage }}</span>
+
+          <button
+            type="button"
+            @click="errorMessage = ''"
+            style="
+              background: none;
+              border: none;
+              color: #842029;
+              font-size: 18px;
+              cursor: pointer;
+            "
+          >
+            ×
+          </button>
+        </div>
+
+        <form @submit.prevent="handleLogin">
+          <!-- email -->
+          <div style="margin-bottom: 18px;">
+            <label
+              for="email"
+              style="
+                display: block;
+                color: #333;
+                font-size: 14px;
+                font-weight: bold;
+                margin-bottom: 7px;
+              "
+            >
+              Email Address
+            </label>
+
+            <input
+              id="email"
+              v-model="email"
+              type="email"
+              placeholder="email@tma.com"
+              required
+              style="
+                width: 100%;
+                height: 42px;
+                padding: 0 12px;
+                border: 1px solid #cfd4da;
+                border-radius: 5px;
+                font-size: 14px;
+                box-sizing: border-box;
+                outline: none;
+                background-color: #f9f9f9;
+                color: #222;
+              "
+            >
+          </div>
+
+          <!-- password -->
+          <div style="margin-bottom: 16px;">
+            <label
+              for="password"
+              style="
+                display: block;
+                color: #333;
+                font-size: 14px;
+                font-weight: bold;
+                margin-bottom: 7px;
+              "
+            >
+              Password
+            </label>
+
+            <input
+              id="password"
+              v-model="password"
+              type="password"
+              placeholder="Enter password"
+              required
+              style="
+                width: 100%;
+                height: 42px;
+                padding: 0 12px;
+                border: 1px solid #cfd4da;
+                border-radius: 5px;
+                font-size: 14px;
+                box-sizing: border-box;
+                outline: none;
+                background-color: #f9f9f9;
+                color: #222;
+              "
+            >
+          </div>
+
+          <!-- remember me -->
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              margin-bottom: 22px;
+            "
+          >
+            <input
+              id="rememberMe"
+              v-model="rememberMe"
+              type="checkbox"
+              style="
+                width: 15px;
+                height: 15px;
+                margin-right: 7px;
+                cursor: pointer;
+              "
+            >
+
+            <label
+              for="rememberMe"
+              style="
+                color: #666;
+                font-size: 13px;
+                cursor: pointer;
+              "
+            >
+              Remember me
+            </label>
+          </div>
+
+          <!-- login button -->
+          <button
+            type="submit"
+            :disabled="loading"
+            :style="{
+              width: '100%',
+              height: '43px',
+              border: 'none',
+              borderRadius: '5px',
+              backgroundColor: loading ? '#7baaf7' : '#0d6efd',
+              color: 'white',
+              fontSize: '15px',
+              fontWeight: 'bold',
+              cursor: loading ? 'not-allowed' : 'pointer'
+            }"
+          >
+            {{ loading ? 'Logging in...' : 'Login' }}
+          </button>
+        </form>
+
+        <!-- register link -->
+        <div
+          style="
+            text-align: center;
+            margin-top: 20px;
+          "
+        >
+          <router-link
+            to="/register"
+            style="
+              color: #0d6efd;
+              font-size: 14px;
+              text-decoration: none;
+            "
+          >
+            Don't have an account? Register as User
+          </router-link>
+        </div>
+
+        <!-- note -->
+        <div
+          style="
+            background-color: #cff4fc;
+            color: #055160;
+            border: 1px solid #b6effb;
+            padding: 12px;
+            border-radius: 5px;
+            margin-top: 22px;
+            font-size: 13px;
+            line-height: 1.5;
+          "
+        >
+          <b>Note:</b> Only users can register themselves. Staff accounts are
+          created by admin.
+        </div>
       </div>
     </div>
   </div>
@@ -193,7 +458,6 @@ export default {
         } else {
           this.$router.push('/user')
         }
-
       } catch (error) {
         this.errorMessage = error.message
       }
@@ -218,22 +482,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.role-box {
-  border: 1px solid #777;
-  padding: 10px;
-  border-radius: 6px;
-  margin-top: 12px;
-  cursor: pointer;
-}
-
-.role-box small {
-  color: #ccc;
-}
-
-.active {
-  background-color: #0d6efd;
-  border-color: #0d6efd;
-}
-</style>

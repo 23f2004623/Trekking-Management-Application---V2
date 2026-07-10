@@ -10,6 +10,13 @@ const routes = [
   {path: '/admin/manage_treks', component: () => import('../views/ManageTreks.vue')},
   {path: '/admin/manage_staff', component: () => import('../views/ManageStaff.vue')},
   {path: '/admin/manage_users', component: () => import('../views/ManageUser.vue')},
+
+   //____staff routes____
+  {path: '/staff', component: () => import('../views/StaffDashboard.vue')},
+  {path: '/staff/manage_treks', component: () => import('../views/StaffManageTrek.vue')},
+
+  //____user routes____
+  {path: '/user', component: () => import('../views/UserDashboard.vue')},
 ]
 
 const router = createRouter({
