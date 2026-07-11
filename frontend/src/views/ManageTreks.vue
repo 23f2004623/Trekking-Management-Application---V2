@@ -1,186 +1,446 @@
 <template>
-  <div>
+  <div
+    style="
+      min-height: 100vh;
+      background-color: #f2f4f7;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #222;
+    "
+  >
     <!-- navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4">
-      <router-link class="navbar-brand" to="/admin">
-        <i class="fa-solid fa-mountain-sun text-warning me-2"></i>
+    <nav
+      style="
+        min-height: 65px;
+        background-color: #1a1a2e;
+        padding: 0 25px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        box-sizing: border-box;
+      "
+    >
+      <router-link
+        to="/admin"
+        style="
+          color: white;
+          text-decoration: none;
+          font-size: 21px;
+          font-weight: bold;
+          padding: 18px 0;
+        "
+      >
+        <span style="color: #ffc107; margin-right: 7px;">▲</span>
         Trek Journey
       </router-link>
 
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#adminNavbar"
+      <div
+        style="
+          display: flex;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: 5px;
+        "
       >
-        <span class="navbar-toggler-icon"></span>
-      </button>
+        <router-link
+          to="/admin"
+          style="
+            color: #d7d7df;
+            text-decoration: none;
+            padding: 9px 13px;
+            border-radius: 5px;
+            font-size: 14px;
+          "
+        >
+          Dashboard
+        </router-link>
 
-      <div class="collapse navbar-collapse" id="adminNavbar">
-        <ul class="navbar-nav me-auto">
-          <li class="nav-item">
-            <router-link class="nav-link" to="/admin">
-              <i class="fa-solid fa-chart-line"></i>
-              Dashboard
-            </router-link>
-          </li>
+        <router-link
+          to="/admin/manage_treks"
+          style="
+            color: white;
+            background-color: #0d6efd;
+            text-decoration: none;
+            padding: 9px 13px;
+            border-radius: 5px;
+            font-size: 14px;
+          "
+        >
+          Treks
+        </router-link>
 
-          <li class="nav-item">
-            <router-link class="nav-link" to="/admin/treks">
-              <i class="fa-solid fa-mountain"></i>
-              Treks
-            </router-link>
-          </li>
+        <router-link
+          to="/admin/manage_staff"
+          style="
+            color: #d7d7df;
+            text-decoration: none;
+            padding: 9px 13px;
+            border-radius: 5px;
+            font-size: 14px;
+          "
+        >
+          Trekking Staff
+        </router-link>
 
-          <li class="nav-item">
-            <router-link class="nav-link" to="/admin/staff">
-              <i class="fa-solid fa-person-hiking"></i>
-              Trekking Staff
-            </router-link>
-          </li>
+        <router-link
+          to="/admin/manage_users"
+          style="
+            color: #d7d7df;
+            text-decoration: none;
+            padding: 9px 13px;
+            border-radius: 5px;
+            font-size: 14px;
+          "
+        >
+          Users
+        </router-link>
 
-          <li class="nav-item">
-            <router-link class="nav-link active" to="/admin/users">
-              <i class="fa-solid fa-users"></i>
-              Users
-            </router-link>
-          </li>
-        </ul>
-
-        <button class="btn btn-outline-danger btn-sm" @click="handleLogout">
-          <i class="fa-solid fa-right-from-bracket me-1"></i>
+        <button
+          type="button"
+          @click="handleLogout"
+          style="
+            background-color: transparent;
+            color: #ff6b75;
+            border: 1px solid #dc3545;
+            padding: 8px 13px;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-left: 8px;
+          "
+        >
           Logout
         </button>
       </div>
     </nav>
 
     <!-- main content -->
-    <div class="main-wrapper">
-      <nav class="navbar navbar-light bg-white shadow-sm mb-4 px-4 py-3">
-        <div class="container-fluid p-0 d-flex justify-content-between align-items-center">
-          <h4 class="m-0">Manage Treks</h4>
+    <div
+      style="
+        width: 100%;
+        max-width: 1450px;
+        margin: auto;
+        padding: 25px;
+        box-sizing: border-box;
+      "
+    >
+      <!-- page heading -->
+      <div
+        style="
+          background-color: white;
+          padding: 18px 22px;
+          border-radius: 8px;
+          margin-bottom: 20px;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: 12px;
+        "
+      >
+        <div>
+          <h2
+            style="
+              margin: 0 0 5px 0;
+              font-size: 24px;
+              color: #222;
+            "
+          >
+            Manage Treks
+          </h2>
 
-          <button class="btn btn-primary" @click="openCreateModal">
-            <i class="fa-solid fa-plus me-1"></i>
-            Add New Trek
-          </button>
+          <p
+            style="
+              margin: 0;
+              color: #777;
+              font-size: 13px;
+            "
+          >
+            Add, update and manage trekking expeditions.
+          </p>
         </div>
-      </nav>
 
-      <!-- search -->
-      <div class="card shadow-sm p-3 mb-4">
-        <div class="row g-2">
-          <div class="col-md-9">
-            <input
-              type="text"
-              class="form-control"
-              v-model="searchQuery"
-              placeholder="Search treks by name or location"
-              @input="handleSearch"
-            >
-          </div>
-
-          <div class="col-md-3">
-            <select
-              class="form-select"
-              v-model="difficultyFilter"
-              @change="filterTreks"
-            >
-              <option value="All">All Difficulties</option>
-              <option value="Easy">Easy</option>
-              <option value="Moderate">Moderate</option>
-              <option value="Hard">Hard</option>
-            </select>
-          </div>
-        </div>
+        <button
+          type="button"
+          @click="openCreateModal"
+          style="
+            background-color: #0d6efd;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+          "
+        >
+          + Add New Trek
+        </button>
       </div>
 
-      <div v-if="successMessage" class="alert alert-success">
-        {{ successMessage }}
-        <button class="btn-close float-end" @click="successMessage = ''"></button>
+      <!-- search and filter -->
+      <div
+        style="
+          background-color: white;
+          border-radius: 8px;
+          padding: 16px;
+          margin-bottom: 20px;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+          display: flex;
+          gap: 12px;
+          flex-wrap: wrap;
+        "
+      >
+        <input
+          v-model="searchQuery"
+          type="text"
+          placeholder="Search treks by name or location"
+          @input="handleSearch"
+          style="
+            flex: 1;
+            min-width: 250px;
+            height: 42px;
+            padding: 0 12px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            font-size: 14px;
+            color: #222;
+            background-color: #fafafa;
+            outline: none;
+            box-sizing: border-box;
+          "
+        >
+
+        <select
+          v-model="difficultyFilter"
+          @change="filterTreks"
+          style="
+            width: 220px;
+            height: 42px;
+            padding: 0 10px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            font-size: 14px;
+            color: #333;
+            background-color: #fafafa;
+            outline: none;
+          "
+        >
+          <option value="All">All Difficulties</option>
+          <option value="Easy">Easy</option>
+          <option value="Moderate">Moderate</option>
+          <option value="Hard">Hard</option>
+        </select>
       </div>
 
-      <div v-if="errorMessage" class="alert alert-danger">
-        {{ errorMessage }}
-        <button class="btn-close float-end" @click="errorMessage = ''"></button>
+      <!-- success message -->
+      <div
+        v-if="successMessage"
+        style="
+          background-color: #d1e7dd;
+          color: #0f5132;
+          border: 1px solid #badbcc;
+          padding: 12px;
+          border-radius: 5px;
+          margin-bottom: 18px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-size: 14px;
+        "
+      >
+        <span>{{ successMessage }}</span>
+
+        <button
+          type="button"
+          @click="successMessage = ''"
+          style="
+            border: none;
+            background: none;
+            color: #0f5132;
+            font-size: 18px;
+            cursor: pointer;
+          "
+        >
+          ×
+        </button>
       </div>
 
-      <!-- trek table -->
-      <div class="card shadow-sm p-4">
-        <div v-if="loading" class="text-center p-5">
-          <div class="spinner-border text-primary"></div>
+      <!-- error message -->
+      <div
+        v-if="errorMessage"
+        style="
+          background-color: #f8d7da;
+          color: #842029;
+          border: 1px solid #f5c2c7;
+          padding: 12px;
+          border-radius: 5px;
+          margin-bottom: 18px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-size: 14px;
+        "
+      >
+        <span>{{ errorMessage }}</span>
+
+        <button
+          type="button"
+          @click="errorMessage = ''"
+          style="
+            border: none;
+            background: none;
+            color: #842029;
+            font-size: 18px;
+            cursor: pointer;
+          "
+        >
+          ×
+        </button>
+      </div>
+
+      <!-- trek list -->
+      <div
+        style="
+          background-color: white;
+          border-radius: 8px;
+          padding: 22px;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        "
+      >
+        <div
+          v-if="loading"
+          style="
+            text-align: center;
+            padding: 50px;
+            color: #0d6efd;
+            font-size: 15px;
+          "
+        >
+          Loading treks...
         </div>
 
-        <div v-else-if="paginatedTreks.length == 0" class="text-center p-5">
-          <i class="fa-solid fa-mountain text-muted fa-3x mb-3"></i>
-          <p class="text-muted">No treks found.</p>
+        <div
+          v-else-if="paginatedTreks.length == 0"
+          style="
+            text-align: center;
+            padding: 50px;
+            color: #777;
+            font-size: 14px;
+          "
+        >
+          No treks found.
         </div>
 
-        <div v-else class="table-responsive">
-          <table class="table table-hover">
-            <thead class="table-light">
-              <tr>
-                <th>ID</th>
-                <th>Trek Name</th>
-                <th>Location</th>
-                <th>Difficulty</th>
-                <th>Duration</th>
-                <th>Slots</th>
-                <th>Staff</th>
-                <th>Status</th>
-                <th class="text-center">Actions</th>
+        <div
+          v-else
+          style="
+            width: 100%;
+            overflow-x: auto;
+          "
+        >
+          <table
+            style="
+              width: 100%;
+              min-width: 1050px;
+              border-collapse: collapse;
+            "
+          >
+            <thead>
+              <tr style="background-color: #f5f6f8;">
+                <th :style="headingStyle">ID</th>
+                <th :style="headingStyle">Trek Name</th>
+                <th :style="headingStyle">Location</th>
+                <th :style="headingStyle">Difficulty</th>
+                <th :style="headingStyle">Duration</th>
+                <th :style="headingStyle">Slots</th>
+                <th :style="headingStyle">Staff</th>
+                <th :style="headingStyle">Status</th>
+                <th :style="headingStyle">Actions</th>
               </tr>
             </thead>
 
             <tbody>
-              <tr v-for="trek in paginatedTreks" :key="trek.id">
-                <td>#{{ trek.id }}</td>
-
-                <td>
-                  {{ trek.name }}
+              <tr
+                v-for="trek in paginatedTreks"
+                :key="trek.id"
+                style="border-bottom: 1px solid #e8ebee;"
+              >
+                <td :style="cellStyle">
+                  <b>#{{ trek.id }}</b>
                 </td>
 
-                <td>
+                <td :style="cellStyle">
+                  <b>{{ trek.name }}</b>
+                </td>
+
+                <td :style="cellStyle">
                   {{ trek.location }}
                 </td>
 
-                <td>
-                  <span class="badge" :class="getDifficultyClass(trek.difficulty)">
+                <td :style="cellStyle">
+                  <span :style="getDifficultyStyle(trek.difficulty)">
                     {{ trek.difficulty }}
                   </span>
                 </td>
 
-                <td>
+                <td :style="cellStyle">
                   {{ trek.duration_days }} Days
                 </td>
 
-                <td>
-                  {{ trek.available_slots }} / {{ trek.total_slots }}
+                <td :style="cellStyle">
+                  <b>{{ trek.available_slots }}</b>
+                  /
+                  {{ trek.total_slots }}
                 </td>
 
-                <td>
+                <td :style="cellStyle">
                   {{ trek.assigned_staff_name || 'Unassigned' }}
                 </td>
 
-                <td>
-                  <span class="badge" :class="getStatusClass(trek.status)">
+                <td :style="cellStyle">
+                  <span :style="getStatusStyle(trek.status)">
                     {{ trek.status }}
                   </span>
                 </td>
 
-                <td class="text-center">
+                <td
+                  style="
+                    padding: 13px;
+                    text-align: center;
+                    white-space: nowrap;
+                  "
+                >
                   <button
-                    class="btn btn-sm btn-outline-secondary me-1"
+                    type="button"
                     @click="openEditModal(trek)"
+                    style="
+                      background-color: white;
+                      color: #555;
+                      border: 1px solid #777;
+                      padding: 7px 10px;
+                      border-radius: 4px;
+                      margin-right: 5px;
+                      cursor: pointer;
+                    "
                   >
-                    <i class="fa-solid fa-pen-to-square"></i>
+                    Edit
                   </button>
 
                   <button
-                    class="btn btn-sm btn-outline-danger"
+                    type="button"
                     @click="confirmDelete(trek)"
+                    style="
+                      background-color: white;
+                      color: #dc3545;
+                      border: 1px solid #dc3545;
+                      padding: 7px 10px;
+                      border-radius: 4px;
+                      cursor: pointer;
+                    "
                   >
-                    <i class="fa-solid fa-trash-can"></i>
+                    Delete
                   </button>
                 </td>
               </tr>
@@ -189,204 +449,331 @@
         </div>
 
         <!-- pagination -->
-        <nav
+        <div
           v-if="totalPages > 1"
-          class="d-flex justify-content-between align-items-center mt-3"
+          style="
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+          "
         >
-          <span class="text-muted small">
+          <span
+            style="
+              color: #777;
+              font-size: 13px;
+            "
+          >
             Showing {{ (currentPage - 1) * itemsPerPage + 1 }}
-            to {{ Math.min(currentPage * itemsPerPage, filteredTreks.length) }}
+            to
+            {{ Math.min(currentPage * itemsPerPage, filteredTreks.length) }}
             of {{ filteredTreks.length }} treks
           </span>
 
-          <ul class="pagination pagination-sm m-0">
-            <li class="page-item" :class="{ disabled: currentPage == 1 }">
-              <button class="page-link" @click="currentPage--">
-                Previous
-              </button>
-            </li>
+          <div
+            style="
+              display: flex;
+              gap: 5px;
+              flex-wrap: wrap;
+            "
+          >
+            <button
+              type="button"
+              @click="previousPage"
+              :disabled="currentPage == 1"
+              :style="pageButtonStyle(currentPage == 1)"
+            >
+              Previous
+            </button>
 
-            <li
+            <button
               v-for="page in totalPages"
               :key="page"
-              class="page-item"
-              :class="{ active: currentPage == page }"
+              type="button"
+              @click="currentPage = page"
+              :style="numberButtonStyle(page)"
             >
-              <button class="page-link" @click="currentPage = page">
-                {{ page }}
-              </button>
-            </li>
-
-            <li class="page-item" :class="{ disabled: currentPage == totalPages }">
-              <button class="page-link" @click="currentPage++">
-                Next
-              </button>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </div>
-
-    <!-- add/edit modal -->
-    <div class="modal fade" id="trekModal" tabindex="-1" ref="trekModal">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header bg-primary text-white">
-            <h5 class="modal-title">
-              {{ isEditing ? 'Edit Trek' : 'Add New Trek' }}
-            </h5>
+              {{ page }}
+            </button>
 
             <button
               type="button"
-              class="btn-close btn-close-white"
-              data-bs-dismiss="modal"
-            ></button>
+              @click="nextPage"
+              :disabled="currentPage == totalPages"
+              :style="pageButtonStyle(currentPage == totalPages)"
+            >
+              Next
+            </button>
           </div>
-
-          <form @submit.prevent="saveTrek">
-            <div class="modal-body">
-              <div class="row g-3">
-                <div class="col-md-6">
-                  <label class="form-label">Trek Name</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    v-model="form.name"
-                    placeholder="Everest Base Camp"
-                    required
-                  >
-                </div>
-
-                <div class="col-md-6">
-                  <label class="form-label">Location</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    v-model="form.location"
-                    placeholder="Nepal"
-                    required
-                  >
-                </div>
-
-                <div class="col-md-4">
-                  <label class="form-label">Difficulty</label>
-                  <select class="form-select" v-model="form.difficulty" required>
-                    <option value="Easy">Easy</option>
-                    <option value="Moderate">Moderate</option>
-                    <option value="Hard">Hard</option>
-                  </select>
-                </div>
-
-                <div class="col-md-4">
-                  <label class="form-label">Duration Days</label>
-                  <input
-                    type="number"
-                    class="form-control"
-                    v-model.number="form.duration_days"
-                    min="1"
-                    required
-                  >
-                </div>
-
-                <div class="col-md-4">
-                  <label class="form-label">Total Slots</label>
-                  <input
-                    type="number"
-                    class="form-control"
-                    v-model.number="form.total_slots"
-                    min="1"
-                    required
-                  >
-                </div>
-
-                <div class="col-md-6">
-                  <label class="form-label">Start Date</label>
-                  <input
-                    type="date"
-                    class="form-control"
-                    v-model="form.start_date"
-                    required
-                  >
-                </div>
-
-                <div class="col-md-6">
-                  <label class="form-label">End Date</label>
-                  <input
-                    type="date"
-                    class="form-control"
-                    v-model="form.end_date"
-                    required
-                  >
-                </div>
-
-                <div class="col-md-6">
-                  <label class="form-label">Assigned Staff</label>
-                  <select class="form-select" v-model="form.assigned_staff_id">
-                    <option :value="null">Select Staff</option>
-
-                    <option
-                      v-for="staff in staffList"
-                      :key="staff.id"
-                      :value="staff.id"
-                    >
-                      {{ staff.full_name }} (Exp: {{ staff.experience || 'N/A' }})
-                    </option>
-                  </select>
-                </div>
-
-                <div class="col-md-6">
-                  <label class="form-label">Status</label>
-                  <select class="form-select" v-model="form.status" required>
-                    <option value="Open">Open</option>
-                    <option value="Closed">Closed</option>
-                    <option value="Pending">Pending</option>
-                    <option value="Completed">Completed</option>
-                  </select>
-                </div>
-
-                <div class="col-md-12">
-                  <label class="form-label">Description</label>
-                  <textarea
-                    class="form-control"
-                    rows="3"
-                    v-model="form.description"
-                    placeholder="Enter trek details"
-                  ></textarea>
-                </div>
-
-                <div class="col-md-12">
-                  <label class="form-label">Image URL</label>
-                  <input
-                    type="url"
-                    class="form-control"
-                    v-model="form.image_url"
-                    placeholder="https://example.com/image.jpg"
-                  >
-                  <small class="text-muted">
-                    Leave blank if no image is available.
-                  </small>
-                </div>
-              </div>
-            </div>
-
-            <div class="modal-footer bg-light">
-              <button
-                type="button"
-                class="btn btn-outline-secondary"
-                data-bs-dismiss="modal"
-              >
-                Cancel
-              </button>
-
-              <button type="submit" class="btn btn-primary">
-                {{ isEditing ? 'Update Trek' : 'Create Trek' }}
-              </button>
-            </div>
-          </form>
         </div>
       </div>
     </div>
 
+    <!-- custom add/edit modal -->
+    <div
+      v-if="showModal"
+      style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.55);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        padding: 20px;
+        box-sizing: border-box;
+      "
+      @click.self="closeModal"
+    >
+      <div
+        style="
+          width: 100%;
+          max-width: 800px;
+          max-height: 90vh;
+          overflow-y: auto;
+          background-color: white;
+          border-radius: 8px;
+          box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+        "
+      >
+        <!-- modal header -->
+        <div
+          style="
+            background-color: #0d6efd;
+            color: white;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 8px 8px 0 0;
+          "
+        >
+          <h3
+            style="
+              margin: 0;
+              font-size: 19px;
+              color: white;
+            "
+          >
+            {{ isEditing ? 'Edit Trek' : 'Add New Trek' }}
+          </h3>
+
+          <button
+            type="button"
+            @click="closeModal"
+            style="
+              border: none;
+              background: none;
+              color: white;
+              font-size: 23px;
+              cursor: pointer;
+            "
+          >
+            ×
+          </button>
+        </div>
+
+        <form @submit.prevent="saveTrek">
+          <div style="padding: 22px;">
+            <div
+              style="
+                display: flex;
+                flex-wrap: wrap;
+                gap: 16px;
+              "
+            >
+              <div style="flex: 1; min-width: 250px;">
+                <label :style="labelStyle">Trek Name</label>
+
+                <input
+                  v-model="form.name"
+                  type="text"
+                  placeholder="Everest Base Camp"
+                  required
+                  :style="inputStyle"
+                >
+              </div>
+
+              <div style="flex: 1; min-width: 250px;">
+                <label :style="labelStyle">Location</label>
+
+                <input
+                  v-model="form.location"
+                  type="text"
+                  placeholder="Nepal"
+                  required
+                  :style="inputStyle"
+                >
+              </div>
+
+              <div style="flex: 1; min-width: 180px;">
+                <label :style="labelStyle">Difficulty</label>
+
+                <select
+                  v-model="form.difficulty"
+                  required
+                  :style="inputStyle"
+                >
+                  <option value="Easy">Easy</option>
+                  <option value="Moderate">Moderate</option>
+                  <option value="Hard">Hard</option>
+                </select>
+              </div>
+
+              <div style="flex: 1; min-width: 180px;">
+                <label :style="labelStyle">Duration Days</label>
+
+                <input
+                  v-model.number="form.duration_days"
+                  type="number"
+                  min="1"
+                  required
+                  :style="inputStyle"
+                >
+              </div>
+
+              <div style="flex: 1; min-width: 180px;">
+                <label :style="labelStyle">Total Slots</label>
+
+                <input
+                  v-model.number="form.total_slots"
+                  type="number"
+                  min="1"
+                  required
+                  :style="inputStyle"
+                >
+              </div>
+
+              <div style="flex: 1; min-width: 250px;">
+                <label :style="labelStyle">Start Date</label>
+
+                <input
+                  v-model="form.start_date"
+                  type="date"
+                  required
+                  :style="inputStyle"
+                >
+              </div>
+
+              <div style="flex: 1; min-width: 250px;">
+                <label :style="labelStyle">End Date</label>
+
+                <input
+                  v-model="form.end_date"
+                  type="date"
+                  required
+                  :style="inputStyle"
+                >
+              </div>
+
+              <div style="flex: 1; min-width: 250px;">
+                <label :style="labelStyle">Assigned Staff</label>
+
+                <select
+                  v-model="form.assigned_staff_id"
+                  :style="inputStyle"
+                >
+                  <option :value="null">Select Staff</option>
+
+                  <option
+                    v-for="staff in staffList"
+                    :key="staff.id"
+                    :value="staff.id"
+                  >
+                    {{ staff.full_name }}
+                    (Exp: {{ staff.experience || 'N/A' }})
+                  </option>
+                </select>
+              </div>
+
+              <div style="flex: 1; min-width: 250px;">
+                <label :style="labelStyle">Status</label>
+
+                <select
+                  v-model="form.status"
+                  required
+                  :style="inputStyle"
+                >
+                  <option value="Open">Open</option>
+                  <option value="Closed">Closed</option>
+                  <option value="Pending">Pending</option>
+                  <option value="Completed">Completed</option>
+                </select>
+              </div>
+
+              <div style="width: 100%;">
+                <label :style="labelStyle">Description</label>
+
+                <textarea
+                  v-model="form.description"
+                  rows="3"
+                  placeholder="Enter trek details"
+                  style="
+                    width: 100%;
+                    min-height: 90px;
+                    padding: 10px 12px;
+                    border: 1px solid #ced4da;
+                    border-radius: 5px;
+                    font-size: 14px;
+                    font-family: Arial, Helvetica, sans-serif;
+                    box-sizing: border-box;
+                    outline: none;
+                    resize: vertical;
+                  "
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- modal buttons -->
+          <div
+            style="
+              padding: 15px 22px;
+              background-color: #f6f7f8;
+              display: flex;
+              justify-content: flex-end;
+              gap: 10px;
+              border-radius: 0 0 8px 8px;
+            "
+          >
+            <button
+              type="button"
+              @click="closeModal"
+              style="
+                background-color: white;
+                color: #555;
+                border: 1px solid #777;
+                padding: 9px 15px;
+                border-radius: 5px;
+                cursor: pointer;
+              "
+            >
+              Cancel
+            </button>
+
+            <button
+              type="submit"
+              style="
+                background-color: #0d6efd;
+                color: white;
+                border: none;
+                padding: 9px 17px;
+                border-radius: 5px;
+                cursor: pointer;
+                font-weight: bold;
+              "
+            >
+              {{ isEditing ? 'Update Trek' : 'Create Trek' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -407,7 +794,7 @@ export default {
 
       isEditing: false,
       editingTrekId: null,
-      bsModal: null,
+      showModal: false,
 
       form: {
         name: '',
@@ -425,7 +812,44 @@ export default {
 
       loading: true,
       successMessage: '',
-      errorMessage: ''
+      errorMessage: '',
+
+      headingStyle: {
+        padding: '13px',
+        textAlign: 'left',
+        color: '#555',
+        fontSize: '13px',
+        borderBottom: '1px solid #dee2e6',
+        whiteSpace: 'nowrap'
+      },
+
+      cellStyle: {
+        padding: '13px',
+        color: '#333',
+        fontSize: '14px',
+        verticalAlign: 'middle'
+      },
+
+      labelStyle: {
+        display: 'block',
+        color: '#333',
+        fontSize: '14px',
+        fontWeight: 'bold',
+        marginBottom: '6px'
+      },
+
+      inputStyle: {
+        width: '100%',
+        height: '41px',
+        padding: '0 11px',
+        border: '1px solid #ced4da',
+        borderRadius: '5px',
+        fontSize: '14px',
+        color: '#222',
+        backgroundColor: 'white',
+        boxSizing: 'border-box',
+        outline: 'none'
+      }
     }
   },
 
@@ -449,6 +873,8 @@ export default {
         if (response.ok) {
           this.treks = data
           this.filterTreks()
+        } else {
+          this.errorMessage = data.message || 'Failed to load treks.'
         }
       } catch (error) {
         this.errorMessage = 'Failed to load treks.'
@@ -494,7 +920,9 @@ export default {
 
       this.filteredTreks = result
       this.currentPage = 1
-      this.totalPages = Math.ceil(this.filteredTreks.length / this.itemsPerPage)
+      this.totalPages = Math.ceil(
+        this.filteredTreks.length / this.itemsPerPage
+      )
     },
 
     handleSearch() {
@@ -519,7 +947,7 @@ export default {
         image_url: ''
       }
 
-      this.bsModal.show()
+      this.showModal = true
     },
 
     openEditModal(trek) {
@@ -540,7 +968,11 @@ export default {
         image_url: trek.image_url || ''
       }
 
-      this.bsModal.show()
+      this.showModal = true
+    },
+
+    closeModal() {
+      this.showModal = false
     },
 
     async saveTrek() {
@@ -565,8 +997,8 @@ export default {
 
         if (response.ok) {
           this.successMessage = data.message
+          this.closeModal()
           this.fetchTreks()
-          this.bsModal.hide()
         } else {
           this.errorMessage = data.message
         }
@@ -576,51 +1008,119 @@ export default {
     },
 
     async confirmDelete(trek) {
-      let check = confirm('Are you sure you want to delete this trek?')
+      let check = confirm(
+        'Are you sure you want to delete trek "' + trek.name + '"?'
+      )
 
-      if (check == true) {
-        try {
-          let response = await window.apiFetch('/api/admin/treks/' + trek.id, {
+      if (check == false) {
+        return
+      }
+
+      this.errorMessage = ''
+      this.successMessage = ''
+
+      try {
+        let response = await window.apiFetch(
+          '/api/admin/treks/' + trek.id,
+          {
             method: 'DELETE'
-          })
-
-          let data = await response.json()
-
-          if (response.ok) {
-            this.successMessage = 'Trek deleted successfully.'
-            this.fetchTreks()
-          } else {
-            this.errorMessage = data.message
           }
-        } catch (error) {
-          this.errorMessage = 'Failed to delete trek.'
+        )
+
+        let data = await response.json()
+
+        if (response.ok) {
+          this.successMessage = 'Trek deleted successfully.'
+          this.fetchTreks()
+        } else {
+          this.errorMessage = data.message
         }
+      } catch (error) {
+        this.errorMessage = 'Failed to delete trek.'
       }
     },
 
-    getDifficultyClass(diff) {
+    previousPage() {
+      if (this.currentPage > 1) {
+        this.currentPage = this.currentPage - 1
+      }
+    },
+
+    nextPage() {
+      if (this.currentPage < this.totalPages) {
+        this.currentPage = this.currentPage + 1
+      }
+    },
+
+    pageButtonStyle(disabled) {
+      return {
+        backgroundColor: disabled ? '#eeeeee' : 'white',
+        color: disabled ? '#999' : '#0d6efd',
+        border: '1px solid #ced4da',
+        padding: '7px 11px',
+        borderRadius: '4px',
+        cursor: disabled ? 'not-allowed' : 'pointer'
+      }
+    },
+
+    numberButtonStyle(page) {
+      return {
+        backgroundColor: this.currentPage == page ? '#0d6efd' : 'white',
+        color: this.currentPage == page ? 'white' : '#0d6efd',
+        border: '1px solid #0d6efd',
+        padding: '7px 11px',
+        borderRadius: '4px',
+        cursor: 'pointer'
+      }
+    },
+
+    getDifficultyStyle(diff) {
+      let backgroundColor = '#6c757d'
+      let color = 'white'
+
       if (diff == 'Easy') {
-        return 'badge-easy'
+        backgroundColor = '#198754'
       } else if (diff == 'Moderate') {
-        return 'badge-moderate'
+        backgroundColor = '#ffc107'
+        color = '#222'
       } else if (diff == 'Hard') {
-        return 'badge-hard'
-      } else {
-        return 'bg-secondary'
+        backgroundColor = '#dc3545'
+      }
+
+      return {
+        display: 'inline-block',
+        backgroundColor: backgroundColor,
+        color: color,
+        padding: '6px 10px',
+        borderRadius: '20px',
+        fontSize: '12px',
+        fontWeight: 'bold'
       }
     },
 
-    getStatusClass(status) {
+    getStatusStyle(status) {
+      let backgroundColor = '#6c757d'
+      let color = 'white'
+
       if (status == 'Open') {
-        return 'badge-open'
+        backgroundColor = '#198754'
       } else if (status == 'Closed') {
-        return 'badge-closed'
+        backgroundColor = '#dc3545'
       } else if (status == 'Pending') {
-        return 'badge-pending'
+        backgroundColor = '#ffc107'
+        color = '#222'
       } else if (status == 'Completed') {
-        return 'badge-completed'
-      } else {
-        return 'bg-secondary'
+        backgroundColor = '#0d6efd'
+      }
+
+      return {
+        display: 'inline-block',
+        backgroundColor: backgroundColor,
+        color: color,
+        padding: '6px 10px',
+        borderRadius: '20px',
+        fontSize: '12px',
+        fontWeight: 'bold'
       }
     },
 
@@ -631,9 +1131,6 @@ export default {
   },
 
   mounted() {
-    let modalBox = this.$refs.trekModal
-    this.bsModal = new bootstrap.Modal(modalBox)
-
     this.fetchTreks()
     this.fetchStaff()
   }

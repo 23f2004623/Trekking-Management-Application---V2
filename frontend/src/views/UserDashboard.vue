@@ -1,126 +1,304 @@
 <template>
-  <div>
+  <div
+    style="
+      min-height: 100vh;
+      background-color: #f2f4f7;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #222;
+    "
+  >
     <!-- navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4">
-      <router-link class="navbar-brand" to="/user">
-        <i class="fa-solid fa-mountain-sun text-warning me-2"></i>
+    <nav
+      style="
+        min-height: 65px;
+        background-color: #1a1a2e;
+        padding: 0 25px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        box-sizing: border-box;
+      "
+    >
+      <router-link
+        to="/user"
+        style="
+          color: white;
+          text-decoration: none;
+          font-size: 21px;
+          font-weight: bold;
+          padding: 18px 0;
+        "
+      >
+        <span style="color: #ffc107; margin-right: 7px;">▲</span>
         Trek Journey
       </router-link>
 
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#userNavbar"
+      <div
+        style="
+          display: flex;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: 6px;
+        "
       >
-        <span class="navbar-toggler-icon"></span>
-      </button>
+        <router-link
+          to="/user"
+          style="
+            color: white;
+            background-color: #0d6efd;
+            text-decoration: none;
+            padding: 9px 13px;
+            border-radius: 5px;
+            font-size: 14px;
+          "
+        >
+          Home
+        </router-link>
 
-      <div class="collapse navbar-collapse" id="userNavbar">
-        <ul class="navbar-nav me-auto">
-          <li class="nav-item">
-            <router-link class="nav-link active" to="/user">
-              <i class="fa-solid fa-house me-1"></i>
-              Home
-            </router-link>
-          </li>
+        <router-link
+          to="/user/treks"
+          style="
+            color: #d7d7df;
+            text-decoration: none;
+            padding: 9px 13px;
+            border-radius: 5px;
+            font-size: 14px;
+          "
+        >
+          Browse Treks
+        </router-link>
 
-          <li class="nav-item">
-            <router-link class="nav-link" to="/user/browse">
-              <i class="fa-solid fa-magnifying-glass me-1"></i>
-              Browse Treks
-            </router-link>
-          </li>
+        <router-link
+          to="/user/trek_history"
+          style="
+            color: #d7d7df;
+            text-decoration: none;
+            padding: 9px 13px;
+            border-radius: 5px;
+            font-size: 14px;
+          "
+        >
+          Trekking History
+        </router-link>
 
-          <li class="nav-item">
-            <router-link class="nav-link" to="/user/history">
-              <i class="fa-solid fa-clock-rotate-left me-1"></i>
-              Trekking History
-            </router-link>
-          </li>
-        </ul>
-
-        <span class="text-white small me-3">
+        <span
+          style="
+            color: #d7d7df;
+            font-size: 14px;
+            margin-left: 10px;
+          "
+        >
           Welcome, {{ trekkerName }}
         </span>
 
-        <button class="btn btn-outline-danger btn-sm" @click="handleLogout">
-          <i class="fa-solid fa-right-from-bracket me-1"></i>
+        <button
+          type="button"
+          @click="handleLogout"
+          style="
+            background-color: transparent;
+            color: #ff6b75;
+            border: 1px solid #dc3545;
+            padding: 8px 13px;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-left: 5px;
+          "
+        >
           Logout
         </button>
       </div>
     </nav>
 
     <!-- main content -->
-    <div class="container-fluid p-4">
+    <div
+      style="
+        width: 100%;
+        max-width: 1450px;
+        margin: auto;
+        padding: 25px;
+        box-sizing: border-box;
+      "
+    >
       <!-- page heading -->
-      <div class="bg-white shadow-sm p-3 mb-4">
-        <div class="d-flex justify-content-between align-items-center">
-          <h4 class="m-0">
+      <div
+        style="
+          background-color: white;
+          padding: 18px 22px;
+          border-radius: 8px;
+          margin-bottom: 20px;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: 12px;
+        "
+      >
+        <div>
+          <h2
+            style="
+              margin: 0 0 5px 0;
+              font-size: 24px;
+              color: #222;
+            "
+          >
             Welcome, {{ trekkerName }}!
-          </h4>
+          </h2>
 
-          <div class="d-flex gap-2">
-            <button
-              class="btn btn-outline-secondary btn-sm"
-              data-bs-toggle="modal"
-              data-bs-target="#profileModal"
-            >
-              <i class="fa-solid fa-user-gear me-1"></i>
-              Edit Profile
-            </button>
+          <p
+            style="
+              margin: 0;
+              color: #777;
+              font-size: 13px;
+            "
+          >
+            Explore treks and manage your bookings.
+          </p>
+        </div>
 
-            <button
-              class="btn btn-primary btn-sm"
-              :disabled="exporting"
-              @click="triggerCSVExport"
-            >
-              <span
-                v-if="exporting"
-                class="spinner-border spinner-border-sm me-1"
-              ></span>
+        <div
+          style="
+            display: flex;
+            gap: 9px;
+            flex-wrap: wrap;
+          "
+        >
+          <button
+            type="button"
+            @click="openProfileModal"
+            style="
+              background-color: white;
+              color: #555;
+              border: 1px solid #777;
+              padding: 9px 14px;
+              border-radius: 5px;
+              font-size: 13px;
+              cursor: pointer;
+            "
+          >
+            Edit Profile
+          </button>
 
-              <i
-                v-else
-                class="fa-solid fa-file-csv me-1"
-              ></i>
-
-              Export History
-            </button>
-          </div>
+          <button
+            type="button"
+            :disabled="exporting"
+            @click="triggerCSVExport"
+            :style="{
+              backgroundColor: exporting ? '#7baaf7' : '#0d6efd',
+              color: 'white',
+              border: 'none',
+              padding: '9px 14px',
+              borderRadius: '5px',
+              fontSize: '13px',
+              cursor: exporting ? 'not-allowed' : 'pointer'
+            }"
+          >
+            {{ exporting ? 'Exporting...' : 'Export History' }}
+          </button>
         </div>
       </div>
 
       <!-- success message -->
-      <div v-if="successMessage" class="alert alert-success">
-        {{ successMessage }}
+      <div
+        v-if="successMessage"
+        style="
+          background-color: #d1e7dd;
+          color: #0f5132;
+          border: 1px solid #badbcc;
+          padding: 12px;
+          border-radius: 5px;
+          margin-bottom: 18px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-size: 14px;
+        "
+      >
+        <span>{{ successMessage }}</span>
 
         <button
-          class="btn-close float-end"
+          type="button"
           @click="successMessage = ''"
-        ></button>
+          style="
+            border: none;
+            background: none;
+            color: #0f5132;
+            font-size: 18px;
+            cursor: pointer;
+          "
+        >
+          ×
+        </button>
       </div>
 
       <!-- error message -->
-      <div v-if="errorMessage" class="alert alert-danger">
-        {{ errorMessage }}
+      <div
+        v-if="errorMessage"
+        style="
+          background-color: #f8d7da;
+          color: #842029;
+          border: 1px solid #f5c2c7;
+          padding: 12px;
+          border-radius: 5px;
+          margin-bottom: 18px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-size: 14px;
+        "
+      >
+        <span>{{ errorMessage }}</span>
 
         <button
-          class="btn-close float-end"
+          type="button"
           @click="errorMessage = ''"
-        ></button>
+          style="
+            border: none;
+            background: none;
+            color: #842029;
+            font-size: 18px;
+            cursor: pointer;
+          "
+        >
+          ×
+        </button>
       </div>
 
-      <!-- export loading -->
-      <div v-if="exportStatus == 'pending'" class="alert alert-warning">
-        <span class="spinner-border spinner-border-sm me-2"></span>
-        Generating CSV report. Please wait.
+      <!-- export pending message -->
+      <div
+        v-if="exportStatus == 'pending'"
+        style="
+          background-color: #fff3cd;
+          color: #664d03;
+          border: 1px solid #ffecb5;
+          padding: 12px;
+          border-radius: 5px;
+          margin-bottom: 18px;
+          font-size: 14px;
+        "
+      >
+        Generating CSV report. Please wait...
       </div>
 
-      <!-- download export -->
+      <!-- export download -->
       <div
         v-if="exportDownloadUrl"
-        class="alert alert-success d-flex justify-content-between align-items-center"
+        style="
+          background-color: #d1e7dd;
+          color: #0f5132;
+          border: 1px solid #badbcc;
+          padding: 12px;
+          border-radius: 5px;
+          margin-bottom: 18px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: 10px;
+          font-size: 14px;
+        "
       >
         <span>
           Your booking history file is ready.
@@ -129,187 +307,387 @@
         <a
           :href="exportDownloadUrl"
           download
-          class="btn btn-success btn-sm"
+          style="
+            background-color: #198754;
+            color: white;
+            text-decoration: none;
+            padding: 8px 13px;
+            border-radius: 5px;
+            font-size: 13px;
+          "
         >
-          <i class="fa-solid fa-download me-1"></i>
           Download CSV
         </a>
       </div>
 
-      <!-- featured treks -->
-      <div class="mb-4">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <h5 class="mb-0">
-            Featured Treks
-          </h5>
-
-          <router-link to="/user/browse">
-            View All Treks
-          </router-link>
-        </div>
-
-        <div v-if="loadingTreks" class="text-center p-5">
-          <div class="spinner-border text-primary"></div>
-        </div>
-
-        <div
-          v-else-if="featuredTreks.length == 0"
-          class="alert alert-light text-center"
+      <!-- featured trek heading -->
+      <div
+        style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: 10px;
+          margin-bottom: 15px;
+        "
+      >
+        <h3
+          style="
+            margin: 0;
+            color: #222;
+            font-size: 20px;
+          "
         >
-          No treks are available for booking.
-        </div>
+          Featured Treks
+        </h3>
 
-        <div v-else class="row g-3">
+        <router-link
+          to="/user/browse"
+          style="
+            color: #0d6efd;
+            text-decoration: none;
+            font-size: 14px;
+          "
+        >
+          View All Treks →
+        </router-link>
+      </div>
+
+      <!-- loading featured treks -->
+      <div
+        v-if="loadingTreks"
+        style="
+          background-color: white;
+          border-radius: 8px;
+          padding: 50px;
+          margin-bottom: 25px;
+          text-align: center;
+          color: #0d6efd;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        "
+      >
+        Loading treks...
+      </div>
+
+      <!-- no treks -->
+      <div
+        v-else-if="featuredTreks.length == 0"
+        style="
+          background-color: white;
+          border-radius: 8px;
+          padding: 35px;
+          margin-bottom: 25px;
+          text-align: center;
+          color: #777;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+          font-size: 14px;
+        "
+      >
+        No treks are available for booking.
+      </div>
+
+      <!-- trek cards -->
+      <div
+        v-else
+        style="
+          display: flex;
+          gap: 18px;
+          flex-wrap: wrap;
+          margin-bottom: 28px;
+        "
+      >
+        <div
+          v-for="trek in featuredTreks.slice(0, 3)"
+          :key="trek.id"
+          style="
+            flex: 1;
+            min-width: 280px;
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            display: flex;
+            flex-direction: column;
+          "
+        >
+
           <div
-            v-for="trek in featuredTreks.slice(0, 3)"
-            :key="trek.id"
-            class="col-md-4"
+            style="
+              padding: 17px;
+              display: flex;
+              flex-direction: column;
+              justify-content: space-between;
+              flex: 1;
+            "
           >
-            <div class="card shadow-sm h-100">
-              <img
-                :src="trek.image_url || 'https://picsum.photos/400/220?random=' + (trek.id + 10)"
-                @error="$event.target.src = 'https://picsum.photos/400/220?random=' + (trek.id + 10)"
-                class="card-img-top"
-                style="height: 160px; object-fit: cover;"
+            <div>
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  gap: 10px;
+                  margin-bottom: 10px;
+                "
               >
+                <span :style="getDifficultyStyle(trek.difficulty)">
+                  {{ trek.difficulty }}
+                </span>
 
-              <div class="card-body d-flex flex-column justify-content-between">
-                <div>
-                  <div class="d-flex justify-content-between mb-2">
-                    <span
-                      class="badge"
-                      :class="getDifficultyClass(trek.difficulty)"
-                    >
-                      {{ trek.difficulty }}
-                    </span>
-
-                    <small class="text-muted">
-                      {{ trek.duration_days }} Days
-                    </small>
-                  </div>
-
-                  <h6>
-                    {{ trek.name }}
-                  </h6>
-
-                  <p class="text-muted small">
-                    <i class="fa-solid fa-location-dot text-danger me-1"></i>
-                    {{ trek.location }}
-                  </p>
-
-                  <p class="text-muted small line-clamp">
-                    {{ trek.description || 'No description available.' }}
-                  </p>
-                </div>
-
-                <div class="d-flex justify-content-between align-items-center border-top pt-2">
-                  <small>
-                    <b>{{ trek.available_slots }}</b> slots left
-                  </small>
-
-                  <button
-                    v-if="trek.available_slots > 0"
-                    class="btn btn-primary btn-sm"
-                    @click="bookTrek(trek.id)"
-                  >
-                    Book Now
-                  </button>
-
-                  <button
-                    v-else
-                    class="btn btn-secondary btn-sm"
-                    disabled
-                  >
-                    Not Available
-                  </button>
-                </div>
+                <span
+                  style="
+                    color: #777;
+                    font-size: 12px;
+                  "
+                >
+                  {{ trek.duration_days }} Days
+                </span>
               </div>
+
+              <h3
+                style="
+                  margin: 0 0 7px 0;
+                  color: #222;
+                  font-size: 18px;
+                "
+              >
+                {{ trek.name }}
+              </h3>
+
+              <p
+                style="
+                  margin: 0 0 10px 0;
+                  color: #dc3545;
+                  font-size: 13px;
+                "
+              >
+                {{ trek.location }}
+              </p>
+
+              <p
+                style="
+                  margin: 0 0 15px 0;
+                  color: #777;
+                  font-size: 13px;
+                  line-height: 1.5;
+                  max-height: 58px;
+                  overflow: hidden;
+                "
+              >
+                {{ trek.description || 'No description available.' }}
+              </p>
+            </div>
+
+            <div
+              style="
+                border-top: 1px solid #e6e8eb;
+                padding-top: 12px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 10px;
+              "
+            >
+              <span
+                style="
+                  color: #555;
+                  font-size: 13px;
+                "
+              >
+                <b>{{ trek.available_slots }}</b> slots left
+              </span>
+
+              <button
+                v-if="trek.available_slots > 0"
+                type="button"
+                @click="bookTrek(trek.id)"
+                style="
+                  background-color: #0d6efd;
+                  color: white;
+                  border: none;
+                  padding: 8px 13px;
+                  border-radius: 5px;
+                  cursor: pointer;
+                  font-size: 13px;
+                "
+              >
+                Book Now
+              </button>
+
+              <button
+                v-else
+                type="button"
+                disabled
+                style="
+                  background-color: #6c757d;
+                  color: white;
+                  border: none;
+                  padding: 8px 13px;
+                  border-radius: 5px;
+                  cursor: not-allowed;
+                  font-size: 13px;
+                "
+              >
+                Not Available
+              </button>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- bookings -->
-      <div class="card shadow-sm p-4">
-        <h5 class="mb-3">
-          <i class="fa-solid fa-ticket text-primary me-2"></i>
+      <!-- bookings section -->
+      <div
+        style="
+          background-color: white;
+          border-radius: 8px;
+          padding: 22px;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+          box-sizing: border-box;
+        "
+      >
+        <h3
+          style="
+            margin: 0 0 20px 0;
+            font-size: 20px;
+            color: #222;
+            border-bottom: 1px solid #e6e8eb;
+            padding-bottom: 12px;
+          "
+        >
           My Bookings
-        </h5>
+        </h3>
 
-        <div v-if="loadingBookings" class="text-center p-4">
-          <div class="spinner-border text-primary"></div>
+        <!-- loading bookings -->
+        <div
+          v-if="loadingBookings"
+          style="
+            text-align: center;
+            padding: 45px;
+            color: #0d6efd;
+            font-size: 14px;
+          "
+        >
+          Loading bookings...
         </div>
 
+        <!-- no bookings -->
         <div
           v-else-if="bookings.length == 0"
-          class="text-center p-4"
+          style="
+            text-align: center;
+            padding: 40px;
+            color: #777;
+            font-size: 14px;
+          "
         >
-          <i class="fa-solid fa-receipt text-muted fa-2x mb-2"></i>
-
-          <p class="text-muted">
+          <p style="margin-bottom: 15px;">
             You have not made any bookings.
           </p>
 
           <router-link
-            to="/user/browse"
-            class="btn btn-primary btn-sm"
+            to="/user/treks"
+            style="
+              display: inline-block;
+              background-color: #0d6efd;
+              color: white;
+              padding: 8px 14px;
+              border-radius: 5px;
+              text-decoration: none;
+              font-size: 13px;
+            "
           >
             Browse Treks
           </router-link>
         </div>
 
-        <div v-else class="table-responsive">
-          <table class="table table-hover">
-            <thead class="table-light">
-              <tr>
-                <th>Trek Name</th>
-                <th>Booking Date</th>
-                <th>Trek Dates</th>
-                <th>Location</th>
-                <th>Status</th>
-                <th class="text-center">Action</th>
+        <!-- bookings table -->
+        <div
+          v-else
+          style="
+            width: 100%;
+            overflow-x: auto;
+          "
+        >
+          <table
+            style="
+              width: 100%;
+              min-width: 950px;
+              border-collapse: collapse;
+            "
+          >
+            <thead>
+              <tr style="background-color: #f5f6f8;">
+                <th :style="headingStyle">Trek Name</th>
+                <th :style="headingStyle">Booking Date</th>
+                <th :style="headingStyle">Trek Dates</th>
+                <th :style="headingStyle">Location</th>
+                <th :style="headingStyle">Status</th>
+                <th :style="headingStyle">Action</th>
               </tr>
             </thead>
 
             <tbody>
-              <tr v-for="booking in bookings" :key="booking.id">
-                <td>
-                  {{ booking.trek_name }}
+              <tr
+                v-for="booking in bookings"
+                :key="booking.id"
+                style="border-bottom: 1px solid #e8ebee;"
+              >
+                <td :style="cellStyle">
+                  <b style="color: #222;">
+                    {{ booking.trek_name }}
+                  </b>
                 </td>
 
-                <td>
+                <td :style="cellStyle">
                   {{ booking.booking_date }}
                 </td>
 
-                <td>
+                <td :style="cellStyle">
                   {{ booking.trek_start_date }}
                   to
                   {{ booking.trek_end_date }}
                 </td>
 
-                <td>
+                <td :style="cellStyle">
                   {{ booking.trek_location }}
                 </td>
 
-                <td>
-                  <span
-                    class="badge"
-                    :class="getStatusClass(booking.status)"
-                  >
+                <td :style="cellStyle">
+                  <span :style="getStatusStyle(booking.status)">
                     {{ booking.status }}
                   </span>
                 </td>
 
-                <td class="text-center">
+                <td
+                  style="
+                    padding: 13px;
+                    text-align: center;
+                  "
+                >
                   <button
                     v-if="booking.status == 'Booked'"
-                    class="btn btn-danger btn-sm"
+                    type="button"
                     @click="cancelBooking(booking.id)"
+                    style="
+                      background-color: #dc3545;
+                      color: white;
+                      border: none;
+                      padding: 7px 11px;
+                      border-radius: 5px;
+                      cursor: pointer;
+                      font-size: 13px;
+                    "
                   >
                     Cancel
                   </button>
 
-                  <span v-else class="text-muted small">
+                  <span
+                    v-else
+                    style="
+                      color: #888;
+                      font-size: 12px;
+                    "
+                  >
                     N/A
                   </span>
                 </td>
@@ -322,89 +700,154 @@
 
     <!-- profile modal -->
     <div
-      class="modal fade"
-      id="profileModal"
-      tabindex="-1"
-      ref="profileModal"
+      v-if="showProfileModal"
+      style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.55);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        padding: 20px;
+        box-sizing: border-box;
+      "
+      @click.self="closeProfileModal"
     >
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header bg-primary text-white">
-            <h5 class="modal-title">
-              Edit Profile
-            </h5>
+      <div
+        style="
+          width: 100%;
+          max-width: 500px;
+          background-color: white;
+          border-radius: 8px;
+          overflow: hidden;
+          box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+        "
+      >
+        <!-- modal header -->
+        <div
+          style="
+            background-color: #0d6efd;
+            color: white;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          "
+        >
+          <h3
+            style="
+              margin: 0;
+              color: white;
+              font-size: 19px;
+            "
+          >
+            Edit Profile
+          </h3>
 
-            <button
-              type="button"
-              class="btn-close btn-close-white"
-              data-bs-dismiss="modal"
-            ></button>
+          <button
+            type="button"
+            @click="closeProfileModal"
+            style="
+              background: none;
+              color: white;
+              border: none;
+              font-size: 23px;
+              cursor: pointer;
+            "
+          >
+            ×
+          </button>
+        </div>
+
+        <form @submit.prevent="updateProfile">
+          <div style="padding: 22px;">
+            <div style="margin-bottom: 16px;">
+              <label :style="labelStyle">
+                Full Name
+              </label>
+
+              <input
+                v-model="profileForm.full_name"
+                type="text"
+                required
+                :style="inputStyle"
+              >
+            </div>
+
+            <div style="margin-bottom: 16px;">
+              <label :style="labelStyle">
+                Email
+              </label>
+
+              <input
+                v-model="profileForm.email"
+                type="email"
+                required
+                :style="inputStyle"
+              >
+            </div>
+
+            <div style="margin-bottom: 5px;">
+              <label :style="labelStyle">
+                Contact Number
+              </label>
+
+              <input
+                v-model="profileForm.contact_number"
+                type="text"
+                required
+                :style="inputStyle"
+              >
+            </div>
           </div>
 
-          <form @submit.prevent="updateProfile">
-            <div class="modal-body">
-              <div class="mb-3">
-                <label class="form-label">
-                  Full Name
-                </label>
+          <!-- modal buttons -->
+          <div
+            style="
+              background-color: #f6f7f8;
+              padding: 15px 22px;
+              display: flex;
+              justify-content: flex-end;
+              gap: 10px;
+            "
+          >
+            <button
+              type="button"
+              @click="closeProfileModal"
+              style="
+                background-color: white;
+                color: #555;
+                border: 1px solid #777;
+                padding: 9px 15px;
+                border-radius: 5px;
+                cursor: pointer;
+              "
+            >
+              Close
+            </button>
 
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="profileForm.full_name"
-                  required
-                >
-              </div>
-
-              <div class="mb-3">
-                <label class="form-label">
-                  Email
-                </label>
-
-                <input
-                  type="email"
-                  class="form-control"
-                  v-model="profileForm.email"
-                  required
-                >
-              </div>
-
-              <div class="mb-3">
-                <label class="form-label">
-                  Contact Number
-                </label>
-
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="profileForm.contact_number"
-                  required
-                >
-              </div>
-            </div>
-
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-outline-secondary"
-                data-bs-dismiss="modal"
-              >
-                Close
-              </button>
-
-              <button
-                type="submit"
-                class="btn btn-primary"
-                :disabled="updatingProfile"
-              >
-                Save Changes
-              </button>
-            </div>
-          </form>
-        </div>
+            <button
+              type="submit"
+              :disabled="updatingProfile"
+              :style="{
+                backgroundColor: updatingProfile ? '#7baaf7' : '#0d6efd',
+                color: 'white',
+                border: 'none',
+                padding: '9px 16px',
+                borderRadius: '5px',
+                cursor: updatingProfile ? 'not-allowed' : 'pointer'
+              }"
+            >
+              {{ updatingProfile ? 'Saving...' : 'Save Changes' }}
+            </button>
+          </div>
+        </form>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -429,11 +872,49 @@ export default {
       pollInterval: null,
 
       updatingProfile: false,
+      showProfileModal: false,
 
       profileForm: {
         full_name: '',
         email: '',
         contact_number: ''
+      },
+
+      headingStyle: {
+        padding: '13px',
+        textAlign: 'left',
+        color: '#555',
+        fontSize: '13px',
+        borderBottom: '1px solid #dee2e6',
+        whiteSpace: 'nowrap'
+      },
+
+      cellStyle: {
+        padding: '13px',
+        color: '#333',
+        fontSize: '14px',
+        verticalAlign: 'middle'
+      },
+
+      labelStyle: {
+        display: 'block',
+        color: '#333',
+        fontSize: '14px',
+        fontWeight: 'bold',
+        marginBottom: '6px'
+      },
+
+      inputStyle: {
+        width: '100%',
+        height: '42px',
+        padding: '0 11px',
+        border: '1px solid #ced4da',
+        borderRadius: '5px',
+        fontSize: '14px',
+        color: '#222',
+        backgroundColor: 'white',
+        boxSizing: 'border-box',
+        outline: 'none'
       }
     }
   },
@@ -448,9 +929,11 @@ export default {
 
         if (response.ok) {
           this.featuredTreks = data
+        } else {
+          this.errorMessage = data.message || 'Failed to load treks.'
         }
       } catch (error) {
-        console.log(error)
+        this.errorMessage = 'Failed to load treks.'
       }
 
       this.loadingTreks = false
@@ -465,9 +948,11 @@ export default {
 
         if (response.ok) {
           this.bookings = data
+        } else {
+          this.errorMessage = data.message || 'Failed to load bookings.'
         }
       } catch (error) {
-        console.log(error)
+        this.errorMessage = 'Failed to load bookings.'
       }
 
       this.loadingBookings = false
@@ -489,7 +974,6 @@ export default {
 
         if (response.ok) {
           this.successMessage = data.message
-
           this.fetchFeaturedTreks()
           this.fetchBookings()
         } else {
@@ -511,6 +995,10 @@ export default {
 
         if (response.ok) {
           this.exportTaskId = data.task_id
+
+          if (this.pollInterval) {
+            clearInterval(this.pollInterval)
+          }
 
           this.pollInterval = setInterval(() => {
             this.pollExportStatus()
@@ -563,6 +1051,14 @@ export default {
       }
     },
 
+    openProfileModal() {
+      this.showProfileModal = true
+    },
+
+    closeProfileModal() {
+      this.showProfileModal = false
+    },
+
     async updateProfile() {
       this.updatingProfile = true
       this.successMessage = ''
@@ -585,11 +1081,7 @@ export default {
             JSON.stringify(data.user)
           )
 
-          let modal = bootstrap.Modal.getInstance(
-            this.$refs.profileModal
-          )
-
-          modal.hide()
+          this.closeProfileModal()
         } else {
           this.errorMessage = data.message
         }
@@ -624,7 +1116,6 @@ export default {
 
         if (response.ok) {
           this.successMessage = data.message
-
           this.fetchBookings()
           this.fetchFeaturedTreks()
         } else {
@@ -635,27 +1126,49 @@ export default {
       }
     },
 
-    getDifficultyClass(diff) {
+    getDifficultyStyle(diff) {
+      let backgroundColor = '#6c757d'
+      let color = 'white'
+
       if (diff == 'Easy') {
-        return 'badge-easy'
+        backgroundColor = '#198754'
       } else if (diff == 'Moderate') {
-        return 'badge-moderate'
+        backgroundColor = '#ffc107'
+        color = '#222'
       } else if (diff == 'Hard') {
-        return 'badge-hard'
-      } else {
-        return 'bg-secondary'
+        backgroundColor = '#dc3545'
+      }
+
+      return {
+        display: 'inline-block',
+        backgroundColor: backgroundColor,
+        color: color,
+        padding: '6px 10px',
+        borderRadius: '20px',
+        fontSize: '12px',
+        fontWeight: 'bold'
       }
     },
 
-    getStatusClass(status) {
+    getStatusStyle(status) {
+      let backgroundColor = '#6c757d'
+
       if (status == 'Booked') {
-        return 'bg-success'
+        backgroundColor = '#198754'
       } else if (status == 'Cancelled') {
-        return 'bg-danger'
+        backgroundColor = '#dc3545'
       } else if (status == 'Completed') {
-        return 'bg-primary'
-      } else {
-        return 'bg-secondary'
+        backgroundColor = '#0d6efd'
+      }
+
+      return {
+        display: 'inline-block',
+        backgroundColor: backgroundColor,
+        color: 'white',
+        padding: '6px 10px',
+        borderRadius: '20px',
+        fontSize: '12px',
+        fontWeight: 'bold'
       }
     },
 
@@ -688,12 +1201,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.line-clamp {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-</style>

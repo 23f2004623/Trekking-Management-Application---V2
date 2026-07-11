@@ -17,6 +17,8 @@ const routes = [
 
   //____user routes____
   {path: '/user', component: () => import('../views/UserDashboard.vue')},
+  {path: '/user/trek_history', component: () => import('../views/TrekingHistory.vue')},
+  {path: '/user/treks', component: () => import('../views/BrowseTreks.vue')},
 ]
 
 const router = createRouter({

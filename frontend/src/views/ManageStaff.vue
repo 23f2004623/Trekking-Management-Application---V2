@@ -1,316 +1,632 @@
 <template>
-  <div>
+  <div
+    style="
+      min-height: 100vh;
+      background-color: #f2f4f7;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #222;
+    "
+  >
     <!-- navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4">
-      <router-link class="navbar-brand" to="/admin">
-        <i class="fa-solid fa-mountain-sun text-warning me-2"></i>
+    <nav
+      style="
+        min-height: 65px;
+        background-color: #1a1a2e;
+        padding: 0 25px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        box-sizing: border-box;
+      "
+    >
+      <router-link
+        to="/admin"
+        style="
+          color: white;
+          text-decoration: none;
+          font-size: 21px;
+          font-weight: bold;
+          padding: 18px 0;
+        "
+      >
+        <span style="color: #ffc107; margin-right: 7px;">▲</span>
         Trek Journey
       </router-link>
 
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#adminNavbar"
+      <div
+        style="
+          display: flex;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: 5px;
+        "
       >
-        <span class="navbar-toggler-icon"></span>
-      </button>
+        <router-link
+          to="/admin"
+          style="
+            color: #d7d7df;
+            text-decoration: none;
+            padding: 9px 13px;
+            border-radius: 5px;
+            font-size: 14px;
+          "
+        >
+          Dashboard
+        </router-link>
 
-      <div class="collapse navbar-collapse" id="adminNavbar">
-        <ul class="navbar-nav me-auto">
-          <li class="nav-item">
-            <router-link class="nav-link" to="/admin">
-              <i class="fa-solid fa-chart-line"></i>
-              Dashboard
-            </router-link>
-          </li>
+        <router-link
+          to="/admin/manage_treks"
+          style="
+            color: #d7d7df;
+            text-decoration: none;
+            padding: 9px 13px;
+            border-radius: 5px;
+            font-size: 14px;
+          "
+        >
+          Treks
+        </router-link>
 
-          <li class="nav-item">
-            <router-link class="nav-link" to="/admin/manage_treks">
-              <i class="fa-solid fa-mountain"></i>
-              Treks
-            </router-link>
-          </li>
+        <router-link
+          to="/admin/manage_staff"
+          style="
+            color: white;
+            background-color: #0d6efd;
+            text-decoration: none;
+            padding: 9px 13px;
+            border-radius: 5px;
+            font-size: 14px;
+          "
+        >
+          Trekking Staff
+        </router-link>
 
-          <li class="nav-item">
-            <router-link class="nav-link active" to="/admin/manage_staff">
-              <i class="fa-solid fa-person-hiking"></i>
-              Trekking Staff
-            </router-link>
-          </li>
+        <router-link
+          to="/admin/manage_users"
+          style="
+            color: #d7d7df;
+            text-decoration: none;
+            padding: 9px 13px;
+            border-radius: 5px;
+            font-size: 14px;
+          "
+        >
+          Users
+        </router-link>
 
-          <li class="nav-item">
-            <router-link class="nav-link" to="/admin/manage_users">
-              <i class="fa-solid fa-users"></i>
-              Users
-            </router-link>
-          </li>
-        </ul>
-
-        <button class="btn btn-outline-danger btn-sm" @click="handleLogout">
-          <i class="fa-solid fa-right-from-bracket me-1"></i>
+        <button
+          type="button"
+          @click="handleLogout"
+          style="
+            background-color: transparent;
+            color: #ff6b75;
+            border: 1px solid #dc3545;
+            padding: 8px 13px;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-left: 8px;
+          "
+        >
           Logout
         </button>
       </div>
     </nav>
 
     <!-- main content -->
-    <div class="container-fluid p-4">
-      <nav class="navbar navbar-light bg-white shadow-sm mb-4 px-4 py-3">
-        <div class="container-fluid p-0">
-          <div>
-            <h4 class="m-0">Manage Trekking Staff</h4>
-            <small class="text-muted">
-              Create and manage trekking staff members
-            </small>
-          </div>
-        </div>
-      </nav>
+    <div
+      style="
+        width: 100%;
+        max-width: 1450px;
+        margin: auto;
+        padding: 25px;
+        box-sizing: border-box;
+      "
+    >
+      <!-- heading -->
+      <div
+        style="
+          background-color: white;
+          padding: 18px 22px;
+          border-radius: 8px;
+          margin-bottom: 20px;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        "
+      >
+        <h2
+          style="
+            margin: 0 0 5px 0;
+            font-size: 24px;
+            color: #222;
+          "
+        >
+          Manage Trekking Staff
+        </h2>
 
-      <div v-if="successMessage" class="alert alert-success">
-        {{ successMessage }}
-        <button class="btn-close float-end" @click="successMessage = ''"></button>
+        <p
+          style="
+            margin: 0;
+            color: #777;
+            font-size: 13px;
+          "
+        >
+          Create and manage trekking staff members.
+        </p>
       </div>
 
-      <div v-if="errorMessage" class="alert alert-danger">
-        {{ errorMessage }}
-        <button class="btn-close float-end" @click="errorMessage = ''"></button>
+      <!-- success message -->
+      <div
+        v-if="successMessage"
+        style="
+          background-color: #d1e7dd;
+          color: #0f5132;
+          border: 1px solid #badbcc;
+          padding: 12px;
+          border-radius: 5px;
+          margin-bottom: 18px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-size: 14px;
+        "
+      >
+        <span>{{ successMessage }}</span>
+
+        <button
+          type="button"
+          @click="successMessage = ''"
+          style="
+            border: none;
+            background: none;
+            color: #0f5132;
+            font-size: 18px;
+            cursor: pointer;
+          "
+        >
+          ×
+        </button>
       </div>
 
-      <div class="row g-4">
+      <!-- error message -->
+      <div
+        v-if="errorMessage"
+        style="
+          background-color: #f8d7da;
+          color: #842029;
+          border: 1px solid #f5c2c7;
+          padding: 12px;
+          border-radius: 5px;
+          margin-bottom: 18px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-size: 14px;
+        "
+      >
+        <span>{{ errorMessage }}</span>
+
+        <button
+          type="button"
+          @click="errorMessage = ''"
+          style="
+            border: none;
+            background: none;
+            color: #842029;
+            font-size: 18px;
+            cursor: pointer;
+          "
+        >
+          ×
+        </button>
+      </div>
+
+      <!-- page columns -->
+      <div
+        style="
+          display: flex;
+          gap: 22px;
+          align-items: flex-start;
+          flex-wrap: wrap;
+        "
+      >
         <!-- create staff form -->
-        <div class="col-lg-5">
-          <div class="card shadow-sm p-4">
-            <h5 class="mb-3">
-              <i class="fa-solid fa-user-plus text-primary me-2"></i>
-              Create New Staff
-            </h5>
+        <div
+          style="
+            flex: 1;
+            min-width: 330px;
+            background-color: white;
+            border-radius: 8px;
+            padding: 22px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            box-sizing: border-box;
+          "
+        >
+          <h3
+            style="
+              margin: 0 0 20px 0;
+              font-size: 19px;
+              color: #222;
+              border-bottom: 1px solid #e6e8eb;
+              padding-bottom: 12px;
+            "
+          >
+            Create New Staff
+          </h3>
 
-            <form @submit.prevent="createStaff">
-              <div class="mb-3">
-                <label class="form-label">Full Name</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="form.full_name"
-                  placeholder="Vikram Singh"
-                  required
-                >
-              </div>
+          <form @submit.prevent="createStaff">
+            <div style="margin-bottom: 15px;">
+              <label :style="labelStyle">Full Name</label>
 
-              <div class="mb-3">
-                <label class="form-label">Email address</label>
-                <input
-                  type="email"
-                  class="form-control"
-                  v-model="form.email"
-                  placeholder="staff@tma.com"
-                  required
-                >
-              </div>
-
-              <div class="mb-3">
-                <label class="form-label">Contact Number</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="form.contact_number"
-                  placeholder="9876543210"
-                  required
-                >
-              </div>
-
-              <div class="row">
-                <div class="col-6 mb-3">
-                  <label class="form-label">Password</label>
-                  <input
-                    type="password"
-                    class="form-control"
-                    v-model="form.password"
-                    placeholder="Password"
-                    required
-                  >
-                </div>
-
-                <div class="col-6 mb-3">
-                  <label class="form-label">Confirm Password</label>
-                  <input
-                    type="password"
-                    class="form-control"
-                    v-model="form.confirm_password"
-                    placeholder="Confirm"
-                    required
-                  >
-                </div>
-              </div>
-
-              <div class="mb-3">
-                <label class="form-label">Experience</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="form.experience"
-                  placeholder="5 Years"
-                >
-              </div>
-
-              <div class="mb-3">
-                <label class="form-label">Specialization</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="form.specialization"
-                  placeholder="High Altitude Rescue"
-                >
-              </div>
-
-              <div class="mb-4">
-                <label class="form-label">Status</label>
-                <select class="form-select" v-model="form.status">
-                  <option value="active">Active</option>
-                  <option value="blacklisted">Blacklisted</option>
-                </select>
-              </div>
-
-              <div class="d-flex justify-content-end gap-2">
-                <button
-                  type="button"
-                  class="btn btn-outline-secondary"
-                  @click="resetForm"
-                >
-                  Cancel
-                </button>
-
-                <button
-                  type="submit"
-                  class="btn btn-primary"
-                  :disabled="creating"
-                >
-                  <span
-                    v-if="creating"
-                    class="spinner-border spinner-border-sm me-2"
-                  ></span>
-                  Create Staff
-                </button>
-              </div>
-            </form>
-
-            <div class="alert alert-warning mt-4 mb-0">
-              <small>
-                Staff will get login details after successful creation.
-              </small>
-            </div>
-          </div>
-        </div>
-
-        <!-- staff table -->
-        <div class="col-lg-7">
-          <div class="card shadow-sm p-4 h-100">
-            <h5 class="mb-3">
-              <i class="fa-solid fa-list text-primary me-2"></i>
-              Staff List
-            </h5>
-
-            <div class="mb-3">
               <input
+                v-model="form.full_name"
                 type="text"
-                class="form-control"
-                v-model="searchQuery"
-                placeholder="Search staff members"
-                @input="fetchStaffList"
+                placeholder="Vikram Singh"
+                required
+                :style="inputStyle"
               >
             </div>
 
-            <div v-if="loading" class="text-center p-5">
-              <div class="spinner-border text-primary"></div>
+            <div style="margin-bottom: 15px;">
+              <label :style="labelStyle">Email Address</label>
+
+              <input
+                v-model="form.email"
+                type="email"
+                placeholder="staff@tma.com"
+                required
+                :style="inputStyle"
+              >
             </div>
 
-            <div v-else-if="staffList.length == 0" class="text-center p-5">
-              <i class="fa-solid fa-users-slash text-muted fa-3x mb-3"></i>
-              <p class="text-muted">No staff members found.</p>
+            <div style="margin-bottom: 15px;">
+              <label :style="labelStyle">Contact Number</label>
+
+              <input
+                v-model="form.contact_number"
+                type="text"
+                placeholder="9876543210"
+                required
+                :style="inputStyle"
+              >
             </div>
 
-            <div v-else class="table-responsive">
-              <table class="table table-hover">
-                <thead class="table-light">
-                  <tr>
-                    <th>ID</th>
-                    <th>Staff Name</th>
-                    <th>Specialization</th>
-                    <th>Status</th>
-                    <th class="text-center">Action</th>
-                  </tr>
-                </thead>
+            <!-- password fields -->
+            <div
+              style="
+                display: flex;
+                gap: 12px;
+                flex-wrap: wrap;
+                margin-bottom: 15px;
+              "
+            >
+              <div style="flex: 1; min-width: 150px;">
+                <label :style="labelStyle">Password</label>
 
-                <tbody>
-                  <tr v-for="(staff, index) in staffList" :key="staff.id">
-                    <td>
+                <input
+                  v-model="form.password"
+                  type="password"
+                  placeholder="Password"
+                  required
+                  :style="inputStyle"
+                >
+              </div>
+
+              <div style="flex: 1; min-width: 150px;">
+                <label :style="labelStyle">Confirm Password</label>
+
+                <input
+                  v-model="form.confirm_password"
+                  type="password"
+                  placeholder="Confirm"
+                  required
+                  :style="inputStyle"
+                >
+              </div>
+            </div>
+
+            <div style="margin-bottom: 15px;">
+              <label :style="labelStyle">Experience</label>
+
+              <input
+                v-model="form.experience"
+                type="text"
+                placeholder="5 Years"
+                :style="inputStyle"
+              >
+            </div>
+
+            <div style="margin-bottom: 15px;">
+              <label :style="labelStyle">Specialization</label>
+
+              <input
+                v-model="form.specialization"
+                type="text"
+                placeholder="High Altitude Rescue"
+                :style="inputStyle"
+              >
+            </div>
+
+            <div style="margin-bottom: 20px;">
+              <label :style="labelStyle">Status</label>
+
+              <select
+                v-model="form.status"
+                :style="inputStyle"
+              >
+                <option value="active">Active</option>
+                <option value="blacklisted">Blacklisted</option>
+              </select>
+            </div>
+
+            <div
+              style="
+                display: flex;
+                justify-content: flex-end;
+                gap: 10px;
+              "
+            >
+              <button
+                type="button"
+                @click="resetForm"
+                style="
+                  background-color: white;
+                  color: #555;
+                  border: 1px solid #777;
+                  padding: 9px 15px;
+                  border-radius: 5px;
+                  cursor: pointer;
+                "
+              >
+                Cancel
+              </button>
+
+              <button
+                type="submit"
+                :disabled="creating"
+                :style="{
+                  backgroundColor: creating ? '#7baaf7' : '#0d6efd',
+                  color: 'white',
+                  border: 'none',
+                  padding: '9px 17px',
+                  borderRadius: '5px',
+                  cursor: creating ? 'not-allowed' : 'pointer',
+                  fontWeight: 'bold'
+                }"
+              >
+                {{ creating ? 'Creating...' : 'Create Staff' }}
+              </button>
+            </div>
+          </form>
+
+          <div
+            style="
+              margin-top: 22px;
+              background-color: #fff3cd;
+              color: #664d03;
+              border: 1px solid #ffecb5;
+              padding: 12px;
+              border-radius: 5px;
+              font-size: 13px;
+              line-height: 1.5;
+            "
+          >
+            Staff will receive login details after successful creation.
+          </div>
+        </div>
+
+        <!-- staff list -->
+        <div
+          style="
+            flex: 1.6;
+            min-width: 450px;
+            background-color: white;
+            border-radius: 8px;
+            padding: 22px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            box-sizing: border-box;
+          "
+        >
+          <h3
+            style="
+              margin: 0 0 18px 0;
+              font-size: 19px;
+              color: #222;
+            "
+          >
+            Staff List
+          </h3>
+
+          <!-- search -->
+          <input
+            v-model="searchQuery"
+            type="text"
+            placeholder="Search staff members"
+            @input="fetchStaffList"
+            style="
+              width: 100%;
+              height: 42px;
+              padding: 0 12px;
+              border: 1px solid #ced4da;
+              border-radius: 5px;
+              font-size: 14px;
+              color: #222;
+              background-color: #fafafa;
+              outline: none;
+              box-sizing: border-box;
+              margin-bottom: 20px;
+            "
+          >
+
+          <!-- loading -->
+          <div
+            v-if="loading"
+            style="
+              text-align: center;
+              padding: 50px;
+              color: #0d6efd;
+              font-size: 15px;
+            "
+          >
+            Loading staff list...
+          </div>
+
+          <!-- empty -->
+          <div
+            v-else-if="staffList.length == 0"
+            style="
+              text-align: center;
+              padding: 50px;
+              color: #777;
+              font-size: 14px;
+            "
+          >
+            No staff members found.
+          </div>
+
+          <!-- table -->
+          <div
+            v-else
+            style="
+              width: 100%;
+              overflow-x: auto;
+            "
+          >
+            <table
+              style="
+                width: 100%;
+                min-width: 800px;
+                border-collapse: collapse;
+              "
+            >
+              <thead>
+                <tr style="background-color: #f5f6f8;">
+                  <th :style="headingStyle">ID</th>
+                  <th :style="headingStyle">Staff Name</th>
+                  <th :style="headingStyle">Specialization</th>
+                  <th :style="headingStyle">Status</th>
+                  <th :style="headingStyle">Action</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr
+                  v-for="(staff, index) in staffList"
+                  :key="staff.id"
+                  style="border-bottom: 1px solid #e8ebee;"
+                >
+                  <td :style="cellStyle">
+                    <b>
                       #ST{{ String(index + 1).padStart(3, '0') }}
-                    </td>
+                    </b>
+                  </td>
 
-                    <td>
-                      <b>{{ staff.full_name }}</b>
-                      <br>
-                      <small class="text-muted">
-                        {{ staff.email }} | {{ staff.contact_number }}
-                      </small>
-                    </td>
+                  <td :style="cellStyle">
+                    <b style="color: #222;">
+                      {{ staff.full_name }}
+                    </b>
 
-                    <td>
-                      <small>
-                        {{ staff.specialization || 'N/A' }}
-                      </small>
-                      <br>
-                      <small class="text-muted">
-                        Exp: {{ staff.experience || 'N/A' }}
-                      </small>
-                    </td>
+                    <br>
 
-                    <td>
-                      <span class="badge" :class="getStatusClass(staff.status)">
-                        {{ staff.status }}
-                      </span>
-                    </td>
+                    <small style="color: #777;">
+                      {{ staff.email }} | {{ staff.contact_number }}
+                    </small>
+                  </td>
 
-                    <td class="text-center">
-                      <button
-                        v-if="staff.status == 'active'"
-                        class="btn btn-sm btn-danger me-1"
-                        @click="toggleStatus(staff, 'blacklisted')"
-                      >
-                        Blacklist
-                      </button>
+                  <td :style="cellStyle">
+                    {{ staff.specialization || 'N/A' }}
 
-                      <button
-                        v-else
-                        class="btn btn-sm btn-success me-1"
-                        @click="toggleStatus(staff, 'active')"
-                      >
-                        Whitelist
-                      </button>
+                    <br>
 
-                      <button
-                        class="btn btn-sm btn-outline-danger"
-                        @click="deleteStaff(staff.id)"
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+                    <small style="color: #777;">
+                      Exp: {{ staff.experience || 'N/A' }}
+                    </small>
+                  </td>
 
-            <div class="alert alert-info mt-3 mb-0">
-              <small>
-                <b>Info:</b> Blacklisted staff cannot login into the system.
-              </small>
-            </div>
+                  <td :style="cellStyle">
+                    <span :style="getStatusStyle(staff.status)">
+                      {{ staff.status }}
+                    </span>
+                  </td>
+
+                  <td
+                    style="
+                      padding: 13px;
+                      text-align: center;
+                      white-space: nowrap;
+                    "
+                  >
+                    <button
+                      v-if="staff.status == 'active'"
+                      type="button"
+                      @click="toggleStatus(staff, 'blacklisted')"
+                      style="
+                        background-color: #dc3545;
+                        color: white;
+                        border: none;
+                        padding: 7px 10px;
+                        border-radius: 4px;
+                        margin-right: 5px;
+                        cursor: pointer;
+                      "
+                    >
+                      Blacklist
+                    </button>
+
+                    <button
+                      v-else
+                      type="button"
+                      @click="toggleStatus(staff, 'active')"
+                      style="
+                        background-color: #198754;
+                        color: white;
+                        border: none;
+                        padding: 7px 10px;
+                        border-radius: 4px;
+                        margin-right: 5px;
+                        cursor: pointer;
+                      "
+                    >
+                      Whitelist
+                    </button>
+
+                    <button
+                      type="button"
+                      @click="deleteStaff(staff.id)"
+                      style="
+                        background-color: white;
+                        color: #dc3545;
+                        border: 1px solid #dc3545;
+                        padding: 7px 10px;
+                        border-radius: 4px;
+                        cursor: pointer;
+                      "
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div
+            style="
+              margin-top: 20px;
+              background-color: #cff4fc;
+              color: #055160;
+              border: 1px solid #b6effb;
+              padding: 12px;
+              border-radius: 5px;
+              font-size: 13px;
+              line-height: 1.5;
+            "
+          >
+            <b>Info:</b> Blacklisted staff cannot login into the system.
           </div>
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -334,6 +650,43 @@ export default {
         experience: '',
         specialization: '',
         status: 'active'
+      },
+
+      labelStyle: {
+        display: 'block',
+        color: '#333',
+        fontSize: '14px',
+        fontWeight: 'bold',
+        marginBottom: '6px'
+      },
+
+      inputStyle: {
+        width: '100%',
+        height: '41px',
+        padding: '0 11px',
+        border: '1px solid #ced4da',
+        borderRadius: '5px',
+        fontSize: '14px',
+        color: '#222',
+        backgroundColor: 'white',
+        boxSizing: 'border-box',
+        outline: 'none'
+      },
+
+      headingStyle: {
+        padding: '13px',
+        textAlign: 'left',
+        color: '#555',
+        fontSize: '13px',
+        borderBottom: '1px solid #dee2e6',
+        whiteSpace: 'nowrap'
+      },
+
+      cellStyle: {
+        padding: '13px',
+        color: '#333',
+        fontSize: '14px',
+        verticalAlign: 'middle'
       }
     }
   },
@@ -346,7 +699,9 @@ export default {
         let endpoint = '/api/admin/staff'
 
         if (this.searchQuery.trim() != '') {
-          endpoint = '/api/admin/search?type=staff&q=' + encodeURIComponent(this.searchQuery)
+          endpoint =
+            '/api/admin/search?type=staff&q=' +
+            encodeURIComponent(this.searchQuery)
         }
 
         let response = await window.apiFetch(endpoint)
@@ -354,9 +709,11 @@ export default {
 
         if (response.ok) {
           this.staffList = data
+        } else {
+          this.errorMessage = data.message || 'Failed to load staff list.'
         }
       } catch (error) {
-        console.log(error)
+        this.errorMessage = 'Failed to load staff list.'
       }
 
       this.loading = false
@@ -399,12 +756,15 @@ export default {
       this.successMessage = ''
 
       try {
-        let response = await window.apiFetch('/api/admin/staff/' + staff.id + '/status', {
-          method: 'PUT',
-          body: {
-            status: newStatus
+        let response = await window.apiFetch(
+          '/api/admin/staff/' + staff.id + '/status',
+          {
+            method: 'PUT',
+            body: {
+              status: newStatus
+            }
           }
-        })
+        )
 
         let data = await response.json()
 
@@ -430,9 +790,12 @@ export default {
       this.successMessage = ''
 
       try {
-        let response = await window.apiFetch('/api/admin/staff/' + staffId, {
-          method: 'DELETE'
-        })
+        let response = await window.apiFetch(
+          '/api/admin/staff/' + staffId,
+          {
+            method: 'DELETE'
+          }
+        )
 
         let data = await response.json()
 
@@ -460,11 +823,21 @@ export default {
       }
     },
 
-    getStatusClass(status) {
+    getStatusStyle(status) {
+      let backgroundColor = '#dc3545'
+
       if (status == 'active') {
-        return 'bg-success'
-      } else {
-        return 'bg-danger'
+        backgroundColor = '#198754'
+      }
+
+      return {
+        display: 'inline-block',
+        backgroundColor: backgroundColor,
+        color: 'white',
+        padding: '6px 10px',
+        borderRadius: '20px',
+        fontSize: '12px',
+        fontWeight: 'bold'
       }
     },
 
@@ -479,13 +852,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.x-text {
-  font-size: 0.8rem;
-}
-
-.x-small {
-  font-size: 0.7rem;
-}
-</style>

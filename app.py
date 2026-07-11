@@ -265,7 +265,6 @@ def blacklist_staff():
     db.session.commit()
     return jsonify({"message": "Staff blacklisted successfully"}), 200
 
-@app
 
 if __name__ == "__main__":
     with app.app_context():

@@ -1,282 +1,603 @@
 <template>
-  <div>
+  <div
+    style="
+      min-height: 100vh;
+      background-color: #f2f4f7;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #222;
+    "
+  >
     <!-- navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4">
-      <router-link class="navbar-brand" to="/staff">
-        <i class="fa-solid fa-mountain-sun text-warning me-2"></i>
+    <nav
+      style="
+        min-height: 65px;
+        background-color: #1a1a2e;
+        padding: 0 25px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        box-sizing: border-box;
+      "
+    >
+      <router-link
+        to="/staff"
+        style="
+          color: white;
+          text-decoration: none;
+          font-size: 21px;
+          font-weight: bold;
+          padding: 18px 0;
+        "
+      >
+        <span style="color: #ffc107; margin-right: 7px;">▲</span>
         Trek Journey
       </router-link>
 
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#staffNavbar"
+      <div
+        style="
+          display: flex;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: 7px;
+        "
       >
-        <span class="navbar-toggler-icon"></span>
-      </button>
+        <router-link
+          to="/staff"
+          style="
+            color: #d7d7df;
+            text-decoration: none;
+            padding: 9px 13px;
+            border-radius: 5px;
+            font-size: 14px;
+          "
+        >
+          My Dashboard
+        </router-link>
 
-      <div class="collapse navbar-collapse" id="staffNavbar">
-        <ul class="navbar-nav me-auto">
-          <li class="nav-item">
-            <router-link class="nav-link" to="/staff">
-              <i class="fa-solid fa-table-columns me-1"></i>
-              My Dashboard
-            </router-link>
-          </li>
+        <span
+          style="
+            color: white;
+            background-color: #0d6efd;
+            padding: 9px 13px;
+            border-radius: 5px;
+            font-size: 14px;
+          "
+        >
+          Manage Trek
+        </span>
 
-          <li class="nav-item">
-            <span class="nav-link active">
-              <i class="fa-solid fa-mountain me-1"></i>
-              Manage Trek
-            </span>
-          </li>
-        </ul>
-
-        <button class="btn btn-outline-danger btn-sm" @click="handleLogout">
-          <i class="fa-solid fa-right-from-bracket me-1"></i>
+        <button
+          type="button"
+          @click="handleLogout"
+          style="
+            background-color: transparent;
+            color: #ff6b75;
+            border: 1px solid #dc3545;
+            padding: 8px 13px;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-left: 8px;
+          "
+        >
           Logout
         </button>
       </div>
     </nav>
 
     <!-- main content -->
-    <div class="container-fluid p-4">
+    <div
+      style="
+        width: 100%;
+        max-width: 1450px;
+        margin: auto;
+        padding: 25px;
+        box-sizing: border-box;
+      "
+    >
       <!-- page heading -->
-      <div class="bg-white shadow-sm p-3 mb-4">
-        <div class="d-flex justify-content-between align-items-center">
-          <div>
-            <router-link
-              to="/staff"
-              class="text-decoration-none text-muted small"
-            >
-              <i class="fa-solid fa-arrow-left me-1"></i>
-              Back to Dashboard
-            </router-link>
+      <div
+        style="
+          background-color: white;
+          padding: 18px 22px;
+          border-radius: 8px;
+          margin-bottom: 20px;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: 12px;
+        "
+      >
+        <div>
+          <router-link
+            to="/staff"
+            style="
+              color: #6c757d;
+              text-decoration: none;
+              font-size: 13px;
+            "
+          >
+            ← Back to Dashboard
+          </router-link>
 
-            <h4 class="mt-2 mb-0">
-              Manage Trek: {{ trek.name }}
-            </h4>
-          </div>
-
-          <span class="badge bg-secondary">
-            Trek ID: #{{ trek.id }}
-          </span>
+          <h2
+            style="
+              margin: 8px 0 0 0;
+              font-size: 24px;
+              color: #222;
+            "
+          >
+            Manage Trek: {{ trek.name }}
+          </h2>
         </div>
+
+        <span
+          style="
+            background-color: #6c757d;
+            color: white;
+            padding: 7px 13px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+          "
+        >
+          Trek ID: #{{ trek.id }}
+        </span>
       </div>
 
       <!-- success message -->
-      <div v-if="successMessage" class="alert alert-success">
-        {{ successMessage }}
+      <div
+        v-if="successMessage"
+        style="
+          background-color: #d1e7dd;
+          color: #0f5132;
+          border: 1px solid #badbcc;
+          padding: 12px;
+          border-radius: 5px;
+          margin-bottom: 18px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-size: 14px;
+        "
+      >
+        <span>{{ successMessage }}</span>
 
         <button
-          class="btn-close float-end"
+          type="button"
           @click="successMessage = ''"
-        ></button>
+          style="
+            border: none;
+            background: none;
+            color: #0f5132;
+            font-size: 18px;
+            cursor: pointer;
+          "
+        >
+          ×
+        </button>
       </div>
 
       <!-- error message -->
-      <div v-if="errorMessage" class="alert alert-danger">
-        {{ errorMessage }}
+      <div
+        v-if="errorMessage"
+        style="
+          background-color: #f8d7da;
+          color: #842029;
+          border: 1px solid #f5c2c7;
+          padding: 12px;
+          border-radius: 5px;
+          margin-bottom: 18px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-size: 14px;
+        "
+      >
+        <span>{{ errorMessage }}</span>
 
         <button
-          class="btn-close float-end"
+          type="button"
           @click="errorMessage = ''"
-        ></button>
+          style="
+            border: none;
+            background: none;
+            color: #842029;
+            font-size: 18px;
+            cursor: pointer;
+          "
+        >
+          ×
+        </button>
       </div>
 
       <!-- loading -->
-      <div v-if="loading" class="text-center p-5">
-        <div class="spinner-border text-primary"></div>
+      <div
+        v-if="loading"
+        style="
+          background-color: white;
+          padding: 60px 20px;
+          border-radius: 8px;
+          text-align: center;
+          color: #0d6efd;
+          font-size: 15px;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        "
+      >
+        Loading trek details...
       </div>
 
-      <div v-else class="row g-4">
-        <!-- trek details -->
-        <div class="col-lg-5">
-          <div class="card shadow-sm p-4">
-            <h5 class="border-bottom pb-2 mb-4">
-              <i class="fa-solid fa-mountain text-primary me-2"></i>
-              Trek Details
-            </h5>
+      <div
+        v-else
+        style="
+          display: flex;
+          gap: 22px;
+          align-items: flex-start;
+          flex-wrap: wrap;
+        "
+      >
+        <!-- trek details and update form -->
+        <div
+          style="
+            flex: 1;
+            min-width: 340px;
+            background-color: white;
+            border-radius: 8px;
+            padding: 22px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            box-sizing: border-box;
+          "
+        >
+          <h3
+            style="
+              margin: 0 0 20px 0;
+              font-size: 19px;
+              color: #222;
+              border-bottom: 1px solid #e6e8eb;
+              padding-bottom: 12px;
+            "
+          >
+            Trek Details
+          </h3>
 
-            <div class="mb-3">
-              <label class="text-muted small">Location</label>
-              <p class="mb-0">
-                {{ trek.location }}
+          <div style="margin-bottom: 16px;">
+            <p :style="smallHeadingStyle">Location</p>
+
+            <p
+              style="
+                margin: 0;
+                font-size: 15px;
+                color: #333;
+              "
+            >
+              {{ trek.location }}
+            </p>
+          </div>
+
+          <div
+            style="
+              display: flex;
+              gap: 20px;
+              flex-wrap: wrap;
+              margin-bottom: 16px;
+            "
+          >
+            <div style="flex: 1; min-width: 130px;">
+              <p :style="smallHeadingStyle">Difficulty</p>
+
+              <span :style="getDifficultyStyle(trek.difficulty)">
+                {{ trek.difficulty }}
+              </span>
+            </div>
+
+            <div style="flex: 1; min-width: 130px;">
+              <p :style="smallHeadingStyle">Duration</p>
+
+              <p
+                style="
+                  margin: 0;
+                  font-size: 15px;
+                  color: #333;
+                "
+              >
+                {{ trek.duration_days }} Days
+              </p>
+            </div>
+          </div>
+
+          <div
+            style="
+              display: flex;
+              gap: 20px;
+              flex-wrap: wrap;
+              margin-bottom: 16px;
+            "
+          >
+            <div style="flex: 1; min-width: 130px;">
+              <p :style="smallHeadingStyle">Start Date</p>
+
+              <p
+                style="
+                  margin: 0;
+                  font-size: 15px;
+                  color: #333;
+                "
+              >
+                {{ trek.start_date }}
               </p>
             </div>
 
-            <div class="row mb-3">
-              <div class="col-6">
-                <label class="text-muted small">Difficulty</label>
-                <br>
+            <div style="flex: 1; min-width: 130px;">
+              <p :style="smallHeadingStyle">End Date</p>
+
+              <p
+                style="
+                  margin: 0;
+                  font-size: 15px;
+                  color: #333;
+                "
+              >
+                {{ trek.end_date }}
+              </p>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 22px;">
+            <p :style="smallHeadingStyle">Description</p>
+
+            <p
+              style="
+                margin: 0;
+                color: #777;
+                font-size: 13px;
+                line-height: 1.6;
+              "
+            >
+              {{ trek.description || 'No description provided.' }}
+            </p>
+          </div>
+
+          <!-- update section -->
+          <h3
+            style="
+              margin: 0 0 18px 0;
+              font-size: 19px;
+              color: #222;
+              border-top: 1px solid #e6e8eb;
+              padding-top: 18px;
+            "
+          >
+            Update Trek
+          </h3>
+
+          <form @submit.prevent="updateTrek">
+            <div style="margin-bottom: 16px;">
+              <label :style="labelStyle">
+                Available Slots
+              </label>
+
+              <div
+                style="
+                  display: flex;
+                  align-items: stretch;
+                "
+              >
+                <input
+                  v-model.number="form.available_slots"
+                  type="number"
+                  min="0"
+                  :max="trek.total_slots"
+                  required
+                  style="
+                    flex: 1;
+                    min-width: 0;
+                    height: 42px;
+                    border: 1px solid #ced4da;
+                    border-right: none;
+                    border-radius: 5px 0 0 5px;
+                    padding: 0 11px;
+                    font-size: 14px;
+                    color: #222;
+                    outline: none;
+                    box-sizing: border-box;
+                  "
+                >
 
                 <span
-                  class="badge"
-                  :class="getDifficultyClass(trek.difficulty)"
+                  style="
+                    background-color: #f1f3f5;
+                    border: 1px solid #ced4da;
+                    color: #555;
+                    display: flex;
+                    align-items: center;
+                    padding: 0 12px;
+                    border-radius: 0 5px 5px 0;
+                    font-size: 13px;
+                    white-space: nowrap;
+                  "
                 >
-                  {{ trek.difficulty }}
+                  / {{ trek.total_slots }} Total
                 </span>
               </div>
-
-              <div class="col-6">
-                <label class="text-muted small">Duration</label>
-                <p class="mb-0">
-                  {{ trek.duration_days }} Days
-                </p>
-              </div>
             </div>
 
-            <div class="row mb-3">
-              <div class="col-6">
-                <label class="text-muted small">Start Date</label>
-                <p class="mb-0">
-                  {{ trek.start_date }}
-                </p>
-              </div>
+            <div style="margin-bottom: 20px;">
+              <label :style="labelStyle">
+                Trek Status
+              </label>
 
-              <div class="col-6">
-                <label class="text-muted small">End Date</label>
-                <p class="mb-0">
-                  {{ trek.end_date }}
-                </p>
-              </div>
+              <select
+                v-model="form.status"
+                required
+                :style="inputStyle"
+              >
+                <option value="Open">Open</option>
+                <option value="Closed">Closed</option>
+                <option value="Pending">Pending</option>
+                <option value="Completed">Completed</option>
+              </select>
             </div>
-
-            <div class="mb-4">
-              <label class="text-muted small">Description</label>
-
-              <p class="text-muted small mb-0">
-                {{ trek.description || 'No description provided.' }}
-              </p>
-            </div>
-
-            <!-- update form -->
-            <h5 class="border-top pt-3 mb-3">
-              <i class="fa-solid fa-pen-to-square text-primary me-2"></i>
-              Update Trek
-            </h5>
-
-            <form @submit.prevent="updateTrek">
-              <div class="mb-3">
-                <label class="form-label">
-                  Available Slots
-                </label>
-
-                <div class="input-group">
-                  <input
-                    type="number"
-                    class="form-control"
-                    v-model.number="form.available_slots"
-                    min="0"
-                    :max="trek.total_slots"
-                    required
-                  >
-
-                  <span class="input-group-text">
-                    / {{ trek.total_slots }}
-                  </span>
-                </div>
-              </div>
-
-              <div class="mb-4">
-                <label class="form-label">
-                  Trek Status
-                </label>
-
-                <select
-                  class="form-select"
-                  v-model="form.status"
-                  required
-                >
-                  <option value="Open">Open</option>
-                  <option value="Closed">Closed</option>
-                  <option value="Pending">Pending</option>
-                  <option value="Completed">Completed</option>
-                </select>
-              </div>
-
-              <div class="d-flex gap-2">
-                <button
-                  type="submit"
-                  class="btn btn-primary w-100"
-                  :disabled="updating"
-                >
-                  <span
-                    v-if="updating"
-                    class="spinner-border spinner-border-sm me-2"
-                  ></span>
-
-                  Update Trek
-                </button>
-
-                <button
-                  v-if="trek.status != 'Completed'"
-                  type="button"
-                  class="btn btn-success w-100"
-                  @click="markCompleted"
-                >
-                  Mark Completed
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-
-        <!-- participant list -->
-        <div class="col-lg-7">
-          <div class="card shadow-sm p-4 h-100">
-            <h5 class="border-bottom pb-2 mb-3">
-              <i class="fa-solid fa-users text-primary me-2"></i>
-              Participants ({{ participants.length }})
-            </h5>
 
             <div
-              v-if="participants.length == 0"
-              class="text-center p-5"
+              style="
+                display: flex;
+                gap: 10px;
+                flex-wrap: wrap;
+              "
             >
-              <i class="fa-solid fa-users-slash text-muted fa-3x mb-3"></i>
+              <button
+                type="submit"
+                :disabled="updating"
+                :style="{
+                  flex: '1',
+                  minWidth: '150px',
+                  backgroundColor: updating ? '#7baaf7' : '#0d6efd',
+                  color: 'white',
+                  border: 'none',
+                  padding: '10px 14px',
+                  borderRadius: '5px',
+                  cursor: updating ? 'not-allowed' : 'pointer',
+                  fontWeight: 'bold'
+                }"
+              >
+                {{ updating ? 'Updating...' : 'Update Trek' }}
+              </button>
 
-              <p class="text-muted">
-                No participants have booked this trek.
-              </p>
+              <button
+                v-if="trek.status != 'Completed'"
+                type="button"
+                @click="markCompleted"
+                style="
+                  flex: 1;
+                  min-width: 150px;
+                  background-color: #198754;
+                  color: white;
+                  border: none;
+                  padding: 10px 14px;
+                  border-radius: 5px;
+                  cursor: pointer;
+                  font-weight: bold;
+                "
+              >
+                Mark Completed
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- participants -->
+        <div
+          style="
+            flex: 1.5;
+            min-width: 450px;
+            background-color: white;
+            border-radius: 8px;
+            padding: 22px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            box-sizing: border-box;
+          "
+        >
+          <h3
+            style="
+              margin: 0 0 20px 0;
+              font-size: 19px;
+              color: #222;
+              border-bottom: 1px solid #e6e8eb;
+              padding-bottom: 12px;
+            "
+          >
+            Participants ({{ participants.length }})
+          </h3>
+
+          <div
+            v-if="participants.length == 0"
+            style="
+              text-align: center;
+              padding: 60px 20px;
+              color: #777;
+              font-size: 14px;
+            "
+          >
+            <div
+              style="
+                font-size: 35px;
+                color: #aaa;
+                margin-bottom: 12px;
+              "
+            >
+              👥
             </div>
 
-            <div v-else class="table-responsive">
-              <table class="table table-hover">
-                <thead class="table-light">
-                  <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Contact</th>
-                    <th>Booking Date</th>
-                  </tr>
-                </thead>
+            No participants have booked this trek.
+          </div>
 
-                <tbody>
-                  <tr
-                    v-for="participant in participants"
-                    :key="participant.booking_id"
-                  >
-                    <td>
+          <div
+            v-else
+            style="
+              width: 100%;
+              overflow-x: auto;
+            "
+          >
+            <table
+              style="
+                width: 100%;
+                min-width: 700px;
+                border-collapse: collapse;
+              "
+            >
+              <thead>
+                <tr style="background-color: #f5f6f8;">
+                  <th :style="headingStyle">Name</th>
+                  <th :style="headingStyle">Email</th>
+                  <th :style="headingStyle">Contact</th>
+                  <th :style="headingStyle">Booking Date</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr
+                  v-for="participant in participants"
+                  :key="participant.booking_id"
+                  style="border-bottom: 1px solid #e8ebee;"
+                >
+                  <td :style="cellStyle">
+                    <b style="color: #222;">
                       {{ participant.full_name }}
-                    </td>
+                    </b>
+                  </td>
 
-                    <td>
-                      {{ participant.email }}
-                    </td>
+                  <td :style="cellStyle">
+                    {{ participant.email }}
+                  </td>
 
-                    <td>
-                      {{ participant.contact_number || 'N/A' }}
-                    </td>
+                  <td :style="cellStyle">
+                    {{ participant.contact_number || 'N/A' }}
+                  </td>
 
-                    <td>
-                      {{ participant.booking_date }}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+                  <td :style="cellStyle">
+                    {{ participant.booking_date }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div
+            style="
+              margin-top: 20px;
+              background-color: #cff4fc;
+              color: #055160;
+              border: 1px solid #b6effb;
+              padding: 12px;
+              border-radius: 5px;
+              font-size: 13px;
+              line-height: 1.5;
+            "
+          >
+            <b>Info:</b> This list shows all users who have booked this trek.
           </div>
         </div>
       </div>
@@ -307,6 +628,51 @@ export default {
       form: {
         available_slots: 0,
         status: 'Open'
+      },
+
+      smallHeadingStyle: {
+        margin: '0 0 6px 0',
+        color: '#777',
+        fontSize: '12px',
+        fontWeight: 'bold',
+        textTransform: 'uppercase'
+      },
+
+      labelStyle: {
+        display: 'block',
+        color: '#333',
+        fontSize: '14px',
+        fontWeight: 'bold',
+        marginBottom: '6px'
+      },
+
+      inputStyle: {
+        width: '100%',
+        height: '42px',
+        padding: '0 11px',
+        border: '1px solid #ced4da',
+        borderRadius: '5px',
+        fontSize: '14px',
+        color: '#222',
+        backgroundColor: 'white',
+        boxSizing: 'border-box',
+        outline: 'none'
+      },
+
+      headingStyle: {
+        padding: '13px',
+        textAlign: 'left',
+        color: '#555',
+        fontSize: '13px',
+        borderBottom: '1px solid #dee2e6',
+        whiteSpace: 'nowrap'
+      },
+
+      cellStyle: {
+        padding: '13px',
+        color: '#333',
+        fontSize: '14px',
+        verticalAlign: 'middle'
       }
     }
   },
@@ -336,9 +702,13 @@ export default {
 
           if (participantResponse.ok) {
             this.participants = participantData
+          } else {
+            this.errorMessage =
+              participantData.message || 'Failed to load participants.'
           }
         } else {
-          this.errorMessage = trekData.message
+          this.errorMessage =
+            trekData.message || 'Failed to load trek details.'
         }
       } catch (error) {
         this.errorMessage = 'Failed to load trek details.'
@@ -409,15 +779,27 @@ export default {
       }
     },
 
-    getDifficultyClass(diff) {
+    getDifficultyStyle(diff) {
+      let backgroundColor = '#6c757d'
+      let color = 'white'
+
       if (diff == 'Easy') {
-        return 'badge-easy'
+        backgroundColor = '#198754'
       } else if (diff == 'Moderate') {
-        return 'badge-moderate'
+        backgroundColor = '#ffc107'
+        color = '#222'
       } else if (diff == 'Hard') {
-        return 'badge-hard'
-      } else {
-        return 'bg-secondary'
+        backgroundColor = '#dc3545'
+      }
+
+      return {
+        display: 'inline-block',
+        backgroundColor: backgroundColor,
+        color: color,
+        padding: '6px 10px',
+        borderRadius: '20px',
+        fontSize: '12px',
+        fontWeight: 'bold'
       }
     },
 
