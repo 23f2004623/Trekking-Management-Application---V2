@@ -498,7 +498,24 @@
               </span>
 
               <button
-                v-if="trek.available_slots > 0"
+                v-if="trek.is_booked"
+                type="button"
+                disabled
+                style="
+                  background-color: #198754;
+                  color: white;
+                  border: none;
+                  padding: 8px 13px;
+                  border-radius: 5px;
+                  cursor: not-allowed;
+                  font-size: 13px;
+                "
+              >
+                Booked
+              </button>
+
+              <button
+                v-else-if="trek.can_book"
                 type="button"
                 @click="bookTrek(trek.id)"
                 style="
@@ -515,6 +532,23 @@
               </button>
 
               <button
+                v-else-if="trek.available_slots <= 0"
+                type="button"
+                disabled
+                style="
+                  background-color: #6c757d;
+                  color: white;
+                  border: none;
+                  padding: 8px 13px;
+                  border-radius: 5px;
+                  cursor: not-allowed;
+                  font-size: 13px;
+                "
+              >
+                Fully Booked
+              </button>
+
+              <button
                 v-else
                 type="button"
                 disabled
@@ -528,7 +562,7 @@
                   font-size: 13px;
                 "
               >
-                Not Available
+                Not Open
               </button>
             </div>
           </div>
@@ -621,6 +655,7 @@
                 <th :style="headingStyle">Booking Date</th>
                 <th :style="headingStyle">Trek Dates</th>
                 <th :style="headingStyle">Location</th>
+                <th :style="headingStyle">Trek Status</th>
                 <th :style="headingStyle">Status</th>
                 <th :style="headingStyle">Action</th>
               </tr>
@@ -650,6 +685,12 @@
 
                 <td :style="cellStyle">
                   {{ booking.trek_location }}
+                </td>
+
+                <td :style="cellStyle">
+                  <span :style="getTrekStatusStyle(booking.trek_status)">
+                    {{ booking.trek_status }}
+                  </span>
                 </td>
 
                 <td :style="cellStyle">
@@ -1165,6 +1206,36 @@ export default {
         display: 'inline-block',
         backgroundColor: backgroundColor,
         color: 'white',
+        padding: '6px 10px',
+        borderRadius: '20px',
+        fontSize: '12px',
+        fontWeight: 'bold'
+      }
+    },
+
+    getTrekStatusStyle(status) {
+      let backgroundColor = '#6c757d'
+      let color = 'white'
+
+      if (status == 'Approved') {
+        backgroundColor = '#20c997'
+      } else if (status == 'Open') {
+        backgroundColor = '#198754'
+      } else if (status == 'Closed') {
+        backgroundColor = '#dc3545'
+      } else if (status == 'Pending') {
+        backgroundColor = '#ffc107'
+        color = '#222'
+      } else if (status == 'Completed') {
+        backgroundColor = '#0d6efd'
+      } else if (status == 'Ongoing') {
+        backgroundColor = '#6610f2'
+      }
+
+      return {
+        display: 'inline-block',
+        backgroundColor: backgroundColor,
+        color: color,
         padding: '6px 10px',
         borderRadius: '20px',
         fontSize: '12px',

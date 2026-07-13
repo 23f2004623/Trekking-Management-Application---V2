@@ -310,38 +310,6 @@
             >
           </div>
 
-          <!-- remember me -->
-          <div
-            style="
-              display: flex;
-              align-items: center;
-              margin-bottom: 22px;
-            "
-          >
-            <input
-              id="rememberMe"
-              v-model="rememberMe"
-              type="checkbox"
-              style="
-                width: 15px;
-                height: 15px;
-                margin-right: 7px;
-                cursor: pointer;
-              "
-            >
-
-            <label
-              for="rememberMe"
-              style="
-                color: #666;
-                font-size: 13px;
-                cursor: pointer;
-              "
-            >
-              Remember me
-            </label>
-          </div>
-
           <!-- login button -->
           <button
             type="submit"

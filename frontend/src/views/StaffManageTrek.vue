@@ -437,6 +437,7 @@
                 <option value="Open">Open</option>
                 <option value="Closed">Closed</option>
                 <option value="Pending">Pending</option>
+                <option value="Ongoing">Ongoing</option>
                 <option value="Completed">Completed</option>
               </select>
             </div>

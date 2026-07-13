@@ -436,24 +436,49 @@
               font-size: 19px;
             "
           >
-            Recent Booking Log
+            {{ showHistory ? 'Trekking History' : 'Recent Booking Log' }}
           </h3>
 
-          <button
-            type="button"
-            @click="toggleViewMode"
+          <div
             style="
-              background-color: white;
-              color: #0d6efd;
-              border: 1px solid #0d6efd;
-              padding: 8px 14px;
-              border-radius: 5px;
-              font-size: 13px;
-              cursor: pointer;
+              display: flex;
+              flex-wrap: wrap;
+              gap: 8px;
             "
           >
-            {{ showAllBookings ? 'Show Recent' : 'View All Bookings' }}
-          </button>
+            <button
+              type="button"
+              @click="toggleHistoryMode"
+              style="
+                background-color: white;
+                color: #198754;
+                border: 1px solid #198754;
+                padding: 8px 14px;
+                border-radius: 5px;
+                font-size: 13px;
+                cursor: pointer;
+              "
+            >
+              {{ showHistory ? 'Show Bookings' : 'View Trekking History' }}
+            </button>
+
+            <button
+              v-if="showHistory == false"
+              type="button"
+              @click="toggleViewMode"
+              style="
+                background-color: white;
+                color: #0d6efd;
+                border: 1px solid #0d6efd;
+                padding: 8px 14px;
+                border-radius: 5px;
+                font-size: 13px;
+                cursor: pointer;
+              "
+            >
+              {{ showAllBookings ? 'Show Recent' : 'View All Bookings' }}
+            </button>
+          </div>
         </div>
 
         <!-- loading -->
@@ -505,6 +530,7 @@
                 <th :style="headingStyle">User</th>
                 <th :style="headingStyle">Trek Name</th>
                 <th :style="headingStyle">Booking Date</th>
+                <th :style="headingStyle">Trek Status</th>
                 <th :style="headingStyle">Status</th>
               </tr>
             </thead>
@@ -549,6 +575,10 @@
                   {{ booking.booking_date }}
                 </td>
 
+                <td :style="cellStyle">
+                  {{ booking.trek_status || 'N/A' }}
+                </td>
+
                 <td
                   :style="{
                     padding: '13px',
@@ -582,7 +612,9 @@ export default {
 
       recentBookings: [],
       allBookings: [],
+      historyBookings: [],
       showAllBookings: false,
+      showHistory: false,
       loading: true,
 
       headingStyle: {
@@ -605,6 +637,10 @@ export default {
 
   computed: {
     filteredBookings() {
+      if (this.showHistory) {
+        return this.historyBookings
+      }
+
       if (this.showAllBookings) {
         return this.allBookings
       } else {
@@ -642,6 +678,36 @@ export default {
         }
       } catch (error) {
         console.log(error)
+      }
+    },
+
+    async fetchHistory() {
+      try {
+        let response = await window.apiFetch('/api/admin/history')
+        let data = await response.json()
+
+        if (response.ok) {
+          this.historyBookings = data
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    },
+
+    async toggleHistoryMode() {
+      if (this.showHistory == true) {
+        this.showHistory = false
+      } else {
+        this.showHistory = true
+        this.showAllBookings = false
+
+        if (this.historyBookings.length == 0) {
+          this.loading = true
+
+          await this.fetchHistory()
+
+          this.loading = false
+        }
       }
     },
 

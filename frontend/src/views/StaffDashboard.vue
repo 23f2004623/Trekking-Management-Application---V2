@@ -476,7 +476,7 @@
                     "
                   >
                     <router-link
-                      :to="'/staff/trek/' + trek.id"
+                      :to="'/staff/manage_treks/' + trek.id"
                       style="
                         display: inline-block;
                         background-color: #0d6efd;
@@ -598,13 +598,19 @@ export default {
       let backgroundColor = '#6c757d'
       let color = 'white'
 
-      if (status == 'Open') {
+      if (status == 'Upcoming') {
+        backgroundColor = '#17a2b8'
+      } else if (status == 'Approved') {
+        backgroundColor = '#20c997'
+      } else if (status == 'Open') {
         backgroundColor = '#198754'
       } else if (status == 'Closed') {
         backgroundColor = '#dc3545'
       } else if (status == 'Pending') {
         backgroundColor = '#ffc107'
         color = '#222'
+      } else if (status == 'Ongoing') {
+        backgroundColor = '#6610f2'
       } else if (status == 'Completed') {
         backgroundColor = '#0d6efd'
       }

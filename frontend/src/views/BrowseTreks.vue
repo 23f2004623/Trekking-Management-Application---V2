@@ -453,6 +453,22 @@
                   {{ trek.available_slots }}
                 </b>
                 slots left
+
+                <span
+                  v-if="trek.is_booked"
+                  style="
+                    display: inline-block;
+                    margin-left: 8px;
+                    background-color: #198754;
+                    color: white;
+                    padding: 3px 8px;
+                    border-radius: 12px;
+                    font-size: 11px;
+                    font-weight: bold;
+                  "
+                >
+                  Booked
+                </span>
               </span>
 
               <button
@@ -790,7 +806,24 @@
           </button>
 
           <button
-            v-if="selectedTrek.available_slots > 0"
+            v-if="selectedTrek.is_booked"
+            type="button"
+            disabled
+            style="
+              background-color: #198754;
+              color: white;
+              border: none;
+              padding: 9px 17px;
+              border-radius: 5px;
+              cursor: not-allowed;
+              font-weight: bold;
+            "
+          >
+            Already Booked
+          </button>
+
+          <button
+            v-else-if="selectedTrek.available_slots > 0 && selectedTrek.status == 'Open'"
             type="button"
             @click="confirmBooking(selectedTrek.id)"
             style="
@@ -807,7 +840,7 @@
           </button>
 
           <button
-            v-else
+            v-else-if="selectedTrek.available_slots <= 0"
             type="button"
             disabled
             style="
@@ -820,6 +853,22 @@
             "
           >
             Fully Booked
+          </button>
+
+          <button
+            v-else
+            type="button"
+            disabled
+            style="
+              background-color: #888;
+              color: white;
+              border: none;
+              padding: 9px 17px;
+              border-radius: 5px;
+              cursor: not-allowed;
+            "
+          >
+            Booking Closed
           </button>
         </div>
       </div>

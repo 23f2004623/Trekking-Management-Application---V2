@@ -211,7 +211,8 @@
                 <th :style="headingStyle">Location</th>
                 <th :style="headingStyle">Trek Dates</th>
                 <th :style="headingStyle">Booking Date</th>
-                <th :style="centerHeadingStyle">Status</th>
+                <th :style="headingStyle">Trek Status</th>
+                <th :style="centerHeadingStyle">Booking Status</th>
               </tr>
             </thead>
 
@@ -243,6 +244,12 @@
 
                 <td :style="cellStyle">
                   {{ booking.booking_date }}
+                </td>
+
+                <td :style="cellStyle">
+                  <span :style="getTrekStatusStyle(booking.trek_status)">
+                    {{ booking.trek_status }}
+                  </span>
                 </td>
 
                 <td
@@ -347,6 +354,34 @@ export default {
         display: 'inline-block',
         backgroundColor: backgroundColor,
         color: 'white',
+        padding: '6px 11px',
+        borderRadius: '20px',
+        fontSize: '12px',
+        fontWeight: 'bold'
+      }
+    },
+
+    getTrekStatusStyle(status) {
+      let backgroundColor = '#6c757d'
+      let color = 'white'
+
+      if (status == 'Approved') {
+        backgroundColor = '#20c997'
+      } else if (status == 'Open') {
+        backgroundColor = '#198754'
+      } else if (status == 'Closed') {
+        backgroundColor = '#dc3545'
+      } else if (status == 'Pending') {
+        backgroundColor = '#ffc107'
+        color = '#222'
+      } else if (status == 'Completed') {
+        backgroundColor = '#0d6efd'
+      }
+
+      return {
+        display: 'inline-block',
+        backgroundColor: backgroundColor,
+        color: color,
         padding: '6px 11px',
         borderRadius: '20px',
         fontSize: '12px',
