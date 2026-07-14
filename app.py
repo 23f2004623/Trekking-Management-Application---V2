@@ -79,8 +79,9 @@ def clear_cache():
         print("Cache clear error:", error)
 
 
-def make_user_cache_key():
+def make_user_cache_key(*args, **kwargs):
     # User id is included because some API responses are different for each user.
+    # *args/**kwargs are accepted because Flask-Caching passes route params (e.g. trek_id).
     user_id = get_jwt_identity()
     query_data = request.query_string.decode("utf-8")
     return str(user_id) + ":" + request.path + ":" + query_data

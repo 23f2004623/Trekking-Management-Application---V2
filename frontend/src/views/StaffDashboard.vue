@@ -44,28 +44,28 @@
       >
         <router-link
           to="/staff"
-          style="
-            color: white;
-            background-color: #0d6efd;
-            text-decoration: none;
-            padding: 9px 13px;
-            border-radius: 5px;
-            font-size: 14px;
-          "
+          :style="{
+            color: 'white',
+            backgroundColor: $route.path === '/staff' ? '#0d6efd' : 'transparent',
+            textDecoration: 'none',
+            padding: '9px 13px',
+            borderRadius: '5px',
+            fontSize: '14px'
+          }"
         >
           My Dashboard
         </router-link>
 
        <router-link
           to="/staff/manage_treks"
-          style="
-            color: white;
-            background-color: #6c757d;
-            text-decoration: none;
-            padding: 9px 13px;
-            border-radius: 5px;
-            font-size: 14px;
-          "
+          :style="{
+            color: 'white',
+            backgroundColor: $route.path === '/staff/manage_treks' ? '#0d6efd' : '#6c757d',
+            textDecoration: 'none',
+            padding: '9px 13px',
+            borderRadius: '5px',
+            fontSize: '14px'
+          }"
         >
           Manage Treks
         </router-link>

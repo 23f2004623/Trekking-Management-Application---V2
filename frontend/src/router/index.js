@@ -13,7 +13,8 @@ const routes = [
 
    //____staff routes____
   {path: '/staff', component: () => import('../views/StaffDashboard.vue')},
-  {path: '/staff/manage_treks', component: () => import('../views/StaffManageTrek.vue')},
+  {path: '/staff/manage_treks', component: () => import('../views/StaffDashboard.vue')},
+  {path: '/staff/manage_treks/:id', component: () => import('../views/StaffManageTrek.vue'), props: true},
 
   //____user routes____
   {path: '/user', component: () => import('../views/UserDashboard.vue')},

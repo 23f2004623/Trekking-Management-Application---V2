@@ -56,6 +56,7 @@
         </router-link>
 
         <span
+          to="/staff/manage-treks/{{ trek.id }}"
           style="
             color: white;
             background-color: #0d6efd;
@@ -688,6 +689,10 @@ export default {
         )
 
         let trekData = await trekResponse.json()
+
+      
+        fetch('http://127.0.0.1:7570/ingest/59e21eaf-13c3-4d81-aed3-efc20dc955a3',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'20b403'},body:JSON.stringify({sessionId:'20b403',location:'StaffManageTrek.vue:fetchTrekData',message:'staff trek fetch result',data:{trekId:this.id,status:trekResponse.status,ok:trekResponse.ok,message:trekData.message||null},timestamp:Date.now(),runId:'post-fix',hypothesisId:'E'})}).catch(()=>{});
+      
 
         if (trekResponse.ok) {
           this.trek = trekData
